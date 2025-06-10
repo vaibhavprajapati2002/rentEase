@@ -9,50 +9,68 @@ const Home = () => {
   return (
     <div
       style={{
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "#fefefe",
         minHeight: "100vh",
         paddingTop: "4rem",
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        color: "#333",
+        color: "#222",
       }}
     >
       <Container>
         <Row className="align-items-center">
-          <Col md={6} style={{ marginBottom: "2rem" }}>
+          <Col
+            md={6}
+            className="text-center text-md-start"
+            style={{ marginBottom: "2rem" }}
+          >
             <img
               src={logo}
               alt="RentEase Logo"
               style={{
-                maxWidth: "200px",
+                maxWidth: "180px",
                 marginBottom: "1rem",
               }}
             />
-            <h1 style={{ fontSize: "2.5rem", fontWeight: "600", marginBottom: "1rem" }}>
+            <h1
+              style={{
+                fontSize: "2.75rem",
+                fontWeight: "700",
+                marginBottom: "1rem",
+                color: "#2b2d42",
+              }}
+            >
               Simplify your Rental Journey
             </h1>
-            <p style={{ fontSize: "1.2rem", lineHeight: "1.6", marginBottom: "1.5rem" }}>
-              From digital agreements to monthly rent tracking — RentEase connects owners and tenants
-              with ease and clarity.
+            <p
+              style={{
+                fontSize: "1.2rem",
+                lineHeight: "1.6",
+                marginBottom: "2rem",
+                color: "#555",
+              }}
+            >
+              From digital agreements to monthly rent tracking — RentEase
+              connects owners and tenants with ease and clarity.
             </p>
             <div>
               <Button
                 variant="primary"
                 style={{
-                  padding: "0.6rem 1.2rem",
+                  padding: "0.6rem 1.4rem",
                   marginRight: "1rem",
                   fontSize: "1rem",
-                  borderRadius: "8px",
+                  borderRadius: "50px",
                 }}
                 onClick={() => navigate("/login")}
               >
                 🔑 Login
               </Button>
               <Button
-                variant="outline-secondary"
+                variant="outline-dark"
                 style={{
-                  padding: "0.6rem 1.2rem",
+                  padding: "0.6rem 1.4rem",
                   fontSize: "1rem",
-                  borderRadius: "8px",
+                  borderRadius: "50px",
                 }}
                 onClick={() => navigate("/register")}
               >
@@ -67,32 +85,42 @@ const Home = () => {
               alt="Rental Illustration"
               style={{
                 width: "100%",
-                borderRadius: "12px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                borderRadius: "16px",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
               }}
             />
           </Col>
         </Row>
 
-        <hr style={{ margin: "4rem 0", borderTop: "1px solid #ccc" }} />
+        <hr style={{ margin: "5rem 0", borderTop: "1px solid #ddd" }} />
 
         <Row>
           <Col>
             <h2
               style={{
-                fontSize: "1.8rem",
-                marginBottom: "1.5rem",
+                fontSize: "2rem",
                 fontWeight: "600",
+                marginBottom: "2rem",
+                color: "#333",
               }}
+              className="text-center"
             >
               ✨ What You Can Do With RentEase
             </h2>
-            <ul style={{ paddingLeft: "1.2rem", fontSize: "1.1rem", lineHeight: "1.8" }}>
+            <ul
+              style={{
+                paddingLeft: "1.2rem",
+                fontSize: "1.1rem",
+                lineHeight: "2",
+                maxWidth: "700px",
+                margin: "0 auto",
+              }}
+            >
               <li>📄 Upload & manage rental agreements</li>
               <li>🧍‍♂️ View tenant profiles</li>
               <li>💸 Track rent, utilities & payments</li>
               <li>💳 View bank details & payment methods</li>
-              <li>🔐 Login with secure access for both owners & tenants</li>
+              <li>🔐 Secure login for both owners & tenants</li>
             </ul>
           </Col>
         </Row>
