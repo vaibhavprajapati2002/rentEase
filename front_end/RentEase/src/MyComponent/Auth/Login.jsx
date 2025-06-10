@@ -37,8 +37,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Submitting form...");
-    console.log("Form data submitted:", formData);
+    // console.log("Submitting form...");
+    // console.log("Form data submitted:", formData);
 
     try {
       const response = await axios.post("http://localhost:5000/login", {
@@ -46,14 +46,20 @@ const Login = () => {
         password: formData.password,
       });
 
-      console.log("Login successful:", response.data);
+      // console.log("Login successful:", response.data);
+
+      const { token, role } = response.data;
 
       // Store the token (if returned)
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
 
-      // Redirect to dashboard
-      navigate("/");
+
+      if (role ==="tenant") {
+        navigate("/tenant/dashboard");
+      } else if (role === "owner") {
+        navigate("/owner/dashboard");
+      } 
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);
       alert(error.response?.data?.message || "Login failed");
