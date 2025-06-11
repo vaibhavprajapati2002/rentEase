@@ -11,3 +11,386 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+
+/* Home.jsx */
+
+
+/* index.css */
+
+/* Global page container */
+.home-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-top: 4rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Heading Section */
+.home-heading h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.home-heading p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* Buttons Group */
+.home-buttons button {
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+/* Image Styling */
+.home-image {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Divider */
+.home-divider {
+  margin: 4rem 0;
+  border-top: 1px solid #ddd;
+}
+
+/* Features Section */
+.features-section h2 {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.features-section ul {
+  padding-left: 1.4rem;
+  font-size: 1.15rem;
+  line-height: 2;
+  list-style-type: none;
+}
+
+.features-section li::before {
+  content: "✔️ ";
+  margin-right: 0.4rem;
+}
+
+/* ========== Animations ========== */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-left {
+  animation: fadeInLeft 1s ease-out;
+}
+
+.fade-in-right {
+  animation: fadeInRight 1s ease-out;
+}
+
+.fade-in-bottom {
+  animation: fadeInBottom 1s ease-out;
+}
+
+
+
+/* Feature section */
+.features-section {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+}
+
+.features-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.features-list {
+  padding-left: 0;
+  list-style-type: none;
+  font-size: 1.15rem;
+  line-height: 2;
+}
+
+.features-list li {
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.features-list li:hover {
+  transform: scale(1.02);
+  color: #007bff;
+}
+
+.feature-emoji {
+  margin-right: 0.6rem;
+  font-size: 1.4rem;
+}
+
+
+/* Feature section container */
+.features-section {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+  border-radius: 12px;
+  animation: fadeInBottom 1s ease-out;
+}
+
+/* Main heading */
+.features-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+  text-shadow: 1px 1px 1px #ccc;
+}
+
+/* Container for all features */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Feature card styling */
+.feature-card {
+  background-color: #ffffff;
+  padding: 1.6rem 1.8rem;
+  border-radius: 16px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for interactivity */
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  background-color: #f5faff;
+}
+
+/* Feature title and emoji */
+.feature-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2d3436;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.feature-emoji {
+  font-size: 1.6rem;
+  margin-right: 0.8rem;
+}
+
+/* Description below title */
+.feature-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  padding-left: 2.4rem;
+}
+
+/* Animation */
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-bottom {
+  animation: fadeInBottom 1s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .features-heading {
+    font-size: 1.75rem;
+  }
+
+  .feature-title {
+    font-size: 1.15rem;
+  }
+
+  .feature-description {
+    font-size: 0.95rem;
+    padding-left: 2rem;
+  }
+
+  .feature-card {
+    padding: 1.4rem;
+  }
+}
+
+
+
+
+/* Feature section */
+.features-section {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+  background: linear-gradient(to right, #fdfbfb, #ebedee); /* soft gradient */
+  animation: fadeInBottom 1s ease-out;
+  border-radius: 16px;
+}
+
+.features-heading {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  color: #2c3e50;
+  text-align: center;
+  text-shadow: 1px 1px 1px #ccc;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+/* Card-style container */
+.feature-card {
+  background-color: #ffffff;
+  padding: 1.6rem 1.8rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s ease-in-out;
+  border-left: 5px solid #007bff;
+  position: relative;
+}
+
+/* Hover interaction */
+.feature-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  background-color: #f8fbff;
+}
+
+/* Title and emoji */
+.feature-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.feature-emoji {
+  font-size: 1.6rem;
+  margin-right: 0.8rem;
+}
+
+/* Description paragraph */
+.feature-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  padding-left: 2.2rem;
+}
+
+/* Fade-in animation for section */
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: staggered delay animation for individual cards */
+.feature-card:nth-child(1) {
+  animation: fadeInBottom 0.5s ease-out 0.1s both;
+}
+.feature-card:nth-child(2) {
+  animation: fadeInBottom 0.5s ease-out 0.2s both;
+}
+.feature-card:nth-child(3) {
+  animation: fadeInBottom 0.5s ease-out 0.3s both;
+}
+.feature-card:nth-child(4) {
+  animation: fadeInBottom 0.5s ease-out 0.4s both;
+}
+.feature-card:nth-child(5) {
+  animation: fadeInBottom 0.5s ease-out 0.5s both;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .features-heading {
+    font-size: 1.8rem;
+  }
+
+  .feature-title {
+    font-size: 1.15rem;
+  }
+
+  .feature-description {
+    font-size: 0.95rem;
+    padding-left: 2rem;
+  }
+
+  .features-list {
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    padding: 1.3rem 1.4rem;
+  }
+}

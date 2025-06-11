@@ -13,8 +13,7 @@ import ResetPassword from './MyComponent/Auth/ResetPassword.jsx';
 import TenantHome from './tenant/TenantHome.jsx';
 import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
-
-
+import Feature from './Feature';
 
 
 
@@ -30,6 +29,7 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<h1>Welcome to RentEase</h1>} /> */}
          <Route path="/" element={<Home />} />
+         <Route path="/feature" element={<Feature />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />

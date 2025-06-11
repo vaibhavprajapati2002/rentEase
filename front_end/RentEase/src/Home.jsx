@@ -1,135 +1,66 @@
 import React from "react";
-import { Container, Typography, Box, Paper } from '@mui/material';
-import { Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./index.css"; // Import global styles
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        backgroundColor: "#f8f9fa",
-        minHeight: "100vh",
-        paddingTop: "4rem",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        color: "#333",
-      }}
-    >
+    <div className="home-container">
       <Container>
+        {/* Hero Section */}
         <Row className="align-items-center mb-5">
+          {/* Left: Text Content */}
           <Col md={6}>
-            <h1
-              style={{
-                fontSize: "2.8rem",
-                fontWeight: "700",
-                marginBottom: "1rem",
-                color: "#2c3e50",
-              }}
-            >
-              Simplify your Rental Journey
-            </h1>
-            <p
-              style={{
-                fontSize: "1.2rem",
-                lineHeight: "1.7",
-                marginBottom: "2rem",
-              }}
-            >
-              From digital agreements to monthly rent tracking — RentEase connects
-              owners and tenants with ease and clarity.
-            </p>
-            <div>
-              <Button
-                variant="primary"
-                style={{
-                  padding: "0.6rem 1.4rem",
-                  marginRight: "1rem",
-                  fontSize: "1rem",
-                  borderRadius: "8px",
-                }}
-                onClick={() => navigate("/login")}
-              >
-                🔑 Login
-              </Button>
-              <Button
-                variant="outline-dark"
-                style={{
-                  padding: "0.6rem 1.4rem",
-                  fontSize: "1rem",
-                  borderRadius: "8px",
-                }}
-                onClick={() => navigate("/register")}
-              >
-                📋 Register
-              </Button>
+            <div className="home-heading fade-in-left">
+              <h1>Simplify your Rental Journey</h1>
+              <p>
+                From digital agreements to monthly rent tracking — <strong>RentEase</strong> connects
+                property owners and tenants with ease, security, and clarity.
+              </p>
+              <div className="home-buttons">
+                <Button variant="primary" onClick={() => navigate("/login")}>
+                  🔑 Login
+                </Button>
+                <Button variant="outline-dark" onClick={() => navigate("/register")}>
+                  📋 Register
+                </Button>
+              </div>
             </div>
           </Col>
 
+          {/* Right: Hero Image */}
           <Col md={6}>
             <img
               src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg"
               alt="Rental Illustration"
-              style={{
-                width: "100%",
-                borderRadius: "14px",
-                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-              }}
+              className="home-image fade-in-right"
             />
           </Col>
         </Row>
 
-        <hr style={{ margin: "4rem 0", borderTop: "1px solid #ddd" }} />
+        {/* Divider */}
+        <hr className="home-divider" />
 
+        {/* Mini Features Preview (optional if Feature.jsx exists) */}
         <Row>
           <Col>
-            <h2
-              style={{
-                fontSize: "1.9rem",
-                fontWeight: "600",
-                marginBottom: "1.5rem",
-              }}
-            >
-              ✨ What You Can Do With RentEase
-            </h2>
-            <ul
-              style={{
-                paddingLeft: "1.4rem",
-                fontSize: "1.15rem",
-                lineHeight: "2",
-              }}
-            >
-              <li>📄 Upload & manage rental agreements and police verification docs</li>
-              <li>🧍‍♂️ View and manage tenant profiles and linked owners</li>
-              <li>💸 Track monthly rent, utilities, and auto-calculated bills</li>
-              <li>💳 Access owner bank details and flexible payment modes</li>
-              <li>🔐 Enjoy secure login with personalized dashboards for tenants and owners</li>
-            </ul>
+            <div className="features-section fade-in-bottom">
+              <h2 className="features-heading">✨ What You Can Do With RentEase</h2>
+              <ul className="features-list">
+                <li className="feature-preview">📄 Upload & manage legal rental documents securely.</li>
+                <li className="feature-preview">🧍‍♂️ Handle complete tenant-owner profiles and property links.</li>
+                <li className="feature-preview">💸 Track rent, utility bills, and payment history automatically.</li>
+                <li className="feature-preview">💳 Enable flexible and secure online rent payments.</li>
+                <li className="feature-preview">🔐 Personalized dashboards for each user type with protected access.</li>
+              </ul>
+            </div>
           </Col>
         </Row>
       </Container>
-      
-        {/* <Paper elevation={3} sx={{ p: 4 }}>
-          <Box textAlign="">
-            <Typography variant="h4" gutterBottom>
-              About us
-            </Typography>
-            <Typography variant="body4" color="text.secondary">
-              At RentEase, we simplify property management for both owners and tenants. Our platform offers a smart,
-               transparent, and secure way to manage rentals — from agreements and rent tracking to police verification 
-               and communication. Whether you're a property owner or a tenant, RentEase ensures a hassle-free rental 
-               experience with modern tools at your fingertips.
-            </Typography>
-          </Box>
-        </Paper> */}
-     
     </div>
   );
 };
 
 export default Home;
-
-
-
-
-
