@@ -5,6 +5,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Logo from '../assets/images/logo.png';
 
 const CustomNavbar = () => {
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+
   return (
     <Navbar bg="light" sticky="top" className="shadow-sm" style={{ height: '80px' }}>
       <Container>
@@ -17,14 +20,22 @@ const CustomNavbar = () => {
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/" active>Home</Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/Nav-Properties">Feature</Nav.Link>
             <Nav.Link as={Link} to="/PropertyDetails">Property</Nav.Link>
             <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
-            <Nav.Link as={Link} to="/login"><i className="bi bi-person"></i> Login</Nav.Link>
+
+            {!token ? (
+              <Nav.Link as={Link} to="/login">
+                <i className="bi bi-person-plus"></i> Login
+              </Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to={`/${role}/dashboard`}>
+                <i class="bi bi-person-circle"></i> My-Profile
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
