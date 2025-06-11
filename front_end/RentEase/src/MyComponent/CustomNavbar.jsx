@@ -7,6 +7,8 @@ import Logo from '../assets/images/logo.png';
 const CustomNavbar = () => {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
+  // window.localStorage.removeItem('token');
+  // window.localStorage.removeItem('role');
 
   return (
     <Navbar bg="light" sticky="top" className="shadow-sm" style={{ height: '80px' }}>
@@ -29,7 +31,7 @@ const CustomNavbar = () => {
 
             {!token ? (
               <Nav.Link as={Link} to="/login">
-                <i className="bi bi-person-plus"></i> Login
+                <i className="bi bi-person-plus"></i>  Login
               </Nav.Link>
             ) : (
               <Nav.Link as={Link} to={`/${role}/dashboard`}>

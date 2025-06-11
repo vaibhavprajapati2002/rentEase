@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Typography, Box, Paper } from '@mui/material';
+import { Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -107,8 +108,28 @@ const Home = () => {
           </Col>
         </Row>
       </Container>
+      
+        {/* <Paper elevation={3} sx={{ p: 4 }}>
+          <Box textAlign="">
+            <Typography variant="h4" gutterBottom>
+              About us
+            </Typography>
+            <Typography variant="body4" color="text.secondary">
+              At RentEase, we simplify property management for both owners and tenants. Our platform offers a smart,
+               transparent, and secure way to manage rentals — from agreements and rent tracking to police verification 
+               and communication. Whether you're a property owner or a tenant, RentEase ensures a hassle-free rental 
+               experience with modern tools at your fingertips.
+            </Typography>
+          </Box>
+        </Paper> */}
+     
     </div>
   );
 };
 
 export default Home;
+
+
+
+
+

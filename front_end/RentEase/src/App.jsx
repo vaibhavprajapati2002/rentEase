@@ -13,6 +13,12 @@ import ResetPassword from './MyComponent/Auth/ResetPassword.jsx';
 import TenantHome from './tenant/TenantHome.jsx';
 import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
+
+
+
+
+
+import Footer from './MyComponent/Footer.jsx';
 function App() {
 
 
@@ -36,6 +42,8 @@ function App() {
 
         {/* Add more routes as needed */}
       </Routes>
+
+      <Footer />
    
     </>
   )
