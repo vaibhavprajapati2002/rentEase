@@ -7,12 +7,6 @@ const TenantHome = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/login");
-  };
-
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -44,7 +38,7 @@ const TenantHome = () => {
 
   const headerStyle = {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-start", // changed from space-between
     alignItems: "center",
     marginBottom: "30px",
   };
@@ -61,13 +55,6 @@ const TenantHome = () => {
     boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
     backgroundColor: "#fff",
     transition: "transform 0.3s ease",
-  };
-
-  const hoverCard = {
-    ...cardStyle,
-    ":hover": {
-      transform: "translateY(-5px)",
-    },
   };
 
   const titleStyle = {
@@ -87,18 +74,10 @@ const TenantHome = () => {
     fontSize: "0.9rem",
   };
 
-  const logoutButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#ff4d4f",
-  };
-
   return (
     <div style={containerStyle}>
       <div style={headerStyle}>
         <h2 style={{ margin: 0 }}>Welcome, {user.name || "Tenant"}</h2>
-        <button style={logoutButtonStyle} onClick={handleLogout}>
-          Logout
-        </button>
       </div>
 
       <div style={{ marginBottom: "30px", color: "#555" }}>
@@ -140,7 +119,6 @@ const TenantHome = () => {
             >
               View
             </button>
-
           </div>
         ))}
       </div>
