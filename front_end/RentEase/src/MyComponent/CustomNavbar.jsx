@@ -15,6 +15,8 @@ const CustomNavbar = () => {
     navigate('/login');
   };
 
+  const oppositeRole = role === "owner" ? "Tenant" : "Owner";
+
   return (
     <Navbar bg="light" sticky="top" expand="lg" className="shadow-sm" style={{ height: '80px' }}>
       <Container>
@@ -38,8 +40,8 @@ const CustomNavbar = () => {
                 <Nav.Link as={Link} to="/PropertyDetails">
                   <i className="bi bi-house-door"></i> Property
                 </Nav.Link>
-                <Nav.Link as={Link} to="/contact">
-                  <i className="bi bi-envelope"></i> Contact
+                <Nav.Link as={Link} to={`/${oppositeRole.toLowerCase()}/dashboard`}>
+                  <i className="bi bi-person-check"></i> {oppositeRole}
                 </Nav.Link>
                 <Nav.Link onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right"></i> Logout
