@@ -1,14 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  Grid,
-  Button,
-  Divider,
-  Container,
-  CircularProgress,
-} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -24,7 +14,7 @@ const TenantHome = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
 
@@ -34,139 +24,127 @@ const TenantHome = () => {
         });
         setUser(res.data);
       } catch (err) {
-        console.error("Fetch user failed:", err);
+        console.error(err);
         navigate("/login");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchData();
+    fetchUser();
   }, [navigate]);
 
-  if (loading) return <CircularProgress sx={{ mt: 10, ml: 10 }} />;
+  if (loading) return <div style={{ padding: "2rem", fontSize: "1.2rem" }}>Loading...</div>;
+
+  const containerStyle = {
+    maxWidth: "1200px",
+    margin: "40px auto",
+    padding: "20px",
+    fontFamily: "'Segoe UI', sans-serif",
+  };
+
+  const headerStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "30px",
+  };
+
+  const cardGrid = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: "20px",
+  };
+
+  const cardStyle = {
+    padding: "20px",
+    borderRadius: "16px",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+    backgroundColor: "#fff",
+    transition: "transform 0.3s ease",
+  };
+
+  const hoverCard = {
+    ...cardStyle,
+    ":hover": {
+      transform: "translateY(-5px)",
+    },
+  };
+
+  const titleStyle = {
+    fontSize: "1.3rem",
+    fontWeight: "600",
+    marginBottom: "8px",
+  };
+
+  const buttonStyle = {
+    marginTop: "10px",
+    padding: "8px 16px",
+    border: "none",
+    borderRadius: "6px",
+    backgroundColor: "#007bff",
+    color: "white",
+    cursor: "pointer",
+    fontSize: "0.9rem",
+  };
+
+  const logoutButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#ff4d4f",
+  };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 5 }}>
-      <Paper elevation={3} sx={{ padding: 4 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-          <Typography variant="h4">Welcome, {user?.name || "Tenant"}</Typography>
-          <Button variant="outlined" color="error" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Box>
+    <div style={containerStyle}>
+      <div style={headerStyle}>
+        <h2 style={{ margin: 0 }}>Welcome, {user.name || "Tenant"}</h2>
+        <button style={logoutButtonStyle} onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
 
-        <Typography variant="body1" mb={2}>
-          Email: {user.email} | Country: {user.country}
-        </Typography>
+      <div style={{ marginBottom: "30px", color: "#555" }}>
+        <p>Email: {user.email}</p>
+        <p>Phone: {user.phone}</p>
+        <p>Country: {user.country}</p>
+      </div>
 
-        <Divider sx={{ mb: 3 }} />
+      <div style={cardGrid}>
+        {[
+          { title: "🏠 Property Details", desc: "View your current property info & lease." },
+          { title: "📄 Rental Agreement", desc: "View and manage rental agreements." },
+          { title: "💡 Utilities", desc: "Track your electricity & water usage." },
+          { title: "💳 Rent Payment", desc: "Pay rent and see payment history." },
+          { title: "👤 Your Profile", desc: "Update your personal info and details." },
+          { title: "📅 Rent Status", desc: "View next due date and current status." },
+          { title: "📜 Payment History", desc: "Track monthly rent payments made." },
+          { title: "📞 Owner Info", desc: "Contact your property owner." },
+          { title: "📢 Complaints", desc: "Raise and track issues with owner." },
+          { title: "💬 Chat (Coming Soon)", desc: "Chat with owner in real-time." },
+        ].map((item, idx) => (
+          <div key={idx} style={cardStyle}>
+            <div style={titleStyle}>{item.title}</div>
+            <p style={{ color: "#666", fontSize: "0.9rem" }}>{item.desc}</p>
+            <button
+              style={buttonStyle}
+              onClick={() => {
+                if (item.title.includes("Property")) navigate("/tenant/property");
+                else if (item.title.includes("Agreement")) navigate("/tenant/agreement");
+                else if (item.title.includes("Utilities")) navigate("/tenant/utilities");
+                else if (item.title.includes("Rent Payment")) navigate("/tenant/rent");
+                else if (item.title.includes("Complaints")) navigate("/tenant/complaints");
+                else if (item.title.includes("Profile")) navigate("/tenant/profile");
+                else if (item.title.includes("Owner Info")) navigate("/tenant/owner");
+                else if (item.title.includes("Rent Status")) navigate("/tenant/status");
+                else if (item.title.includes("Payment History")) navigate("/tenant/history");
+                else alert("This feature is coming soon!");
+              }}
+            >
+              View
+            </button>
 
-        <Grid container spacing={4}>
-          {/* Existing features */}
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">📄 Agreement</Typography>
-              <Typography variant="body2" color="text.secondary">
-                View your current rental agreement and download documents.
-              </Typography>
-              <Button variant="text" sx={{ mt: 1 }}>View Agreement</Button>
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">💡 Utility Usage</Typography>
-              <Typography variant="body2" color="text.secondary">
-                Track your electricity, water, and other usage.
-              </Typography>
-              <Button variant="text" sx={{ mt: 1 }}>View Utilities</Button>
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">💳 Payments</Typography>
-              <Typography variant="body2" color="text.secondary">
-                View and make rent or utility payments.
-              </Typography>
-              <Button variant="text" sx={{ mt: 1 }}>Pay Rent</Button>
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">📢 Complaints</Typography>
-              <Typography variant="body2" color="text.secondary">
-                Raise a complaint or track status with your property owner.
-              </Typography>
-              <Button variant="text" sx={{ mt: 1 }}>File Complaint</Button>
-            </Paper>
-          </Grid>
-
-          {/* 🧩 New Features Below */}
-
-          {/* Tenant Profile Info */}
-          <Grid item xs={12}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">👤 Your Profile</Typography>
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                Name: {user.name} <br />
-                Phone: {user.phone} <br />
-                Email: {user.email} <br />
-                Country: {user.country}
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Rent Status */}
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">📅 Rent Status</Typography>
-              <Typography variant="body2" color="text.secondary">
-                Next due date: 1st of every month <br />
-                Status: <span style={{ color: "green" }}>Paid</span>
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Payment History */}
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">📜 Payment History</Typography>
-              <ul style={{ marginTop: "0.5rem" }}>
-                <li>May 2025 – ₹8000 – UPI</li>
-                <li>April 2025 – ₹8000 – UPI</li>
-                <li>March 2025 – ₹8000 – Netbanking</li>
-              </ul>
-            </Paper>
-          </Grid>
-
-          {/* Owner Contact Info */}
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h6">📞 Owner Contact</Typography>
-              <Typography variant="body2">
-                Name: Rahul Sharma <br />
-                Phone: +91 9876543210 <br />
-                Email: rahul.owner@example.com
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Chat (Placeholder) */}
-          <Grid item xs={12} md={6}>
-            <Paper elevation={1} sx={{ p: 2, textAlign: "center" }}>
-              <Typography variant="h6">💬 Chat with Owner</Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                Coming Soon: Real-time chat with your property owner.
-              </Typography>
-              <Button variant="outlined" disabled>Start Chat</Button>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Container>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

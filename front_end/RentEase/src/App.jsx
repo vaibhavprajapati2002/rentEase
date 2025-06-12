@@ -10,10 +10,11 @@ import UserDetails from './MyComponent/Auth/UserDetails.jsx';
 import Role from './MyComponent/Auth/Role.jsx';
 import ForgotPassword from './MyComponent/Auth/ForgotPassword.jsx';
 import ResetPassword from './MyComponent/Auth/ResetPassword.jsx';
-import TenantHome from './tenant/TenantHome.jsx';
+import TenantHome from './Tenant/TenantHome.jsx';
 import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
+import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
 
 
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/reset-password/:email" element={<ResetPassword />} />
         <Route path="/tenant/dashboard" element={<TenantHome />} />
         <Route path="/owner/dashboard" element={<OwnerHome />} />
+        <Route path="/tenant/property" element={<PropertyDetails />} />
 
         {/* Add more routes as needed */}
       </Routes>
