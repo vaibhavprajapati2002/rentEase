@@ -15,6 +15,7 @@ import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
+import MyProperties from './Owner/Pages/MyProperties.jsx';
 
 
 
@@ -38,8 +39,23 @@ function App() {
         <Route path="/role" element={<Role />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:email" element={<ResetPassword />} />
+        
+        
+
+
+        {/* Add more releted to Owner  from vaibhav  side  */}
+         <Route path="/owner/dashboard" element={<OwnerHome />} />
+        <Route path="/owner/my-properties" element={<MyProperties />} />
+         
+
+
+
+
+
+
+
+        {/* Add more releted to tenant from vivek side  */}
         <Route path="/tenant/dashboard" element={<TenantHome />} />
-        <Route path="/owner/dashboard" element={<OwnerHome />} />
         <Route path="/tenant/property" element={<PropertyDetails />} />
 
         {/* Add more routes as needed */}
