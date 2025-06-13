@@ -13,17 +13,32 @@ import axios from "axios";
 
 const Register = () => {
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
+
+  const validatePhone = (number) => {
+    const phoneRegex = /^[6-9]\d{9}$/; // Starts with 6-9, 10 digits total
+    return phoneRegex.test(number);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate phone number before submitting
+    if (!validatePhone(phone)) {
+      setPhoneError("Please enter a valid 10-digit phone number starting with 6-9.");
+      return;
+    } else {
+      setPhoneError("");
+    }
+
     try {
       const response = await axios.post("http://localhost:5000/send-otp", {
         phone: phone
       });
-      console.log(response.data);
-      const otp = response.data.otp;
-      console.log("OTP:", otp);
+      // console.log(response.data);
+      // const otp = response.data.otp;
+      // console.log("OTP:", otp);
       navigate('/verify-otp', { state: { phone, otp } });
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -50,6 +65,8 @@ const Register = () => {
             onChange={(e) => setPhone(e.target.value)}
             type="text"
             required
+            error={!!phoneError}
+            helperText={phoneError}
           />
 
           <Button type="submit" fullWidth variant="contained">

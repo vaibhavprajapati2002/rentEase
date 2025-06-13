@@ -16,11 +16,12 @@ exports.createProperty = async (req, res) => {
       size,
       availableFrom,
       description,
-      image,
     } = req.body;
 
+    const image = req.file ? req.file.filename : "";
+
     const property = new Property({
-      owner: req.user._id, // req.user should be set from auth middleware
+      owner: req.user._id,
       name,
       address,
       city,
@@ -43,6 +44,7 @@ exports.createProperty = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Get all properties for logged-in owner
 exports.getMyProperties = async (req, res) => {
@@ -113,3 +115,13 @@ exports.getPropertyById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports .getAllProperties = async (req, res) => {
+  try {
+    const properties = await Property.find();
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error("Error fetching all properties:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}

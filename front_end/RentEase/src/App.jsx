@@ -16,6 +16,7 @@ import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
 import MyProperties from './Owner/Pages/MyProperties.jsx';
+import ViewProperty from './Tenant/pages/ViewProperty.jsx';
 
 
 
@@ -57,6 +58,8 @@ function App() {
         {/* Add more releted to tenant from vivek side  */}
         <Route path="/tenant/dashboard" element={<TenantHome />} />
         <Route path="/tenant/property" element={<PropertyDetails />} />
+        <Route path="/tenant/view-property" element={<ViewProperty />} />
+
 
         {/* Add more routes as needed */}
       </Routes>
