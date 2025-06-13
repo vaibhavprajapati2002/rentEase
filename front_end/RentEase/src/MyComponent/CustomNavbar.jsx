@@ -12,7 +12,8 @@ const CustomNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    navigate('/login');
+    localStorage.removeItem('userId');
+    navigate('/');
   };
 
   const oppositeRole = role === "owner" ? "Tenant" : "Owner";

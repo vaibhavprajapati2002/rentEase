@@ -37,7 +37,7 @@ const Register = () => {
         phone: phone
       });
       // console.log(response.data);
-      // const otp = response.data.otp;
+      const otp = response.data.otp;
       // console.log("OTP:", otp);
       navigate('/verify-otp', { state: { phone, otp } });
     } catch (error) {

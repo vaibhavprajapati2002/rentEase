@@ -48,11 +48,12 @@ const Login = () => {
 
       // console.log("Login successful:", response.data);
 
-      const { token, role } = response.data;
+      const { token, role , _id } = response.data;
 
       // Store the token (if returned)
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("userId", _id);
 
 
       if (role ==="tenant") {

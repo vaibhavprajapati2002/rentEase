@@ -10,13 +10,14 @@ import UserDetails from './MyComponent/Auth/UserDetails.jsx';
 import Role from './MyComponent/Auth/Role.jsx';
 import ForgotPassword from './MyComponent/Auth/ForgotPassword.jsx';
 import ResetPassword from './MyComponent/Auth/ResetPassword.jsx';
-import TenantHome from './Tenant/TenantHome.jsx';
+import TenantHome from './Tenant/components/TenantHome.jsx';
 import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
+
 import MyProperties from './Owner/Pages/MyProperties.jsx';
-import ViewProperty from './Tenant/pages/ViewProperty.jsx';
+import ViewProperty from './tenant/pages/ViewProperty.jsx';
 
 
 

@@ -6,9 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 const TenantHome = () => {
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [propertyCode, setPropertyCode] = useState("");
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,6 +20,11 @@ const TenantHome = () => {
         const res = await axios.get("http://localhost:5000/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        const propertyId = res.data.property;
+        if (!propertyId) {
+          toast.error("You need to assign a property first.");
+          return navigate("/tenant/view-property");
+        }
         setUser(res.data);
       } catch (err) {
         console.error(err);
@@ -30,28 +36,7 @@ const TenantHome = () => {
     fetchUser();
   }, [navigate]);
 
-  const handleJoinProperty = async () => {
-    if (!propertyCode) {
-      toast.error("Please enter a property code.");
-      return;
-    }
-
-    try {
-      const res = await axios.post("http://localhost:5000/api/tenant/join-property", {
-        tenantId: user._id,
-        propertyCode,
-      });
-
-      toast.success(res.data.message || "Joined property successfully!");
-      setUser((prev) => ({
-        ...prev,
-        linkedProperty: res.data.propertyId,
-      }));
-      setPropertyCode("");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to join property.");
-    }
-  };
+  
 
   if (loading)
     return <div style={{ padding: "2rem", fontSize: "1.2rem" }}>Loading...</div>;
@@ -87,34 +72,7 @@ const TenantHome = () => {
     fontSize: "0.9rem",
   };
 
-  // If tenant is not linked to a property, show only the join UI
-  if (!user?.linkedProperty) {
-    return (
-      <div style={{ ...containerStyle, textAlign: "center" }}>
-        <h2>🔗 You are not linked to any property</h2>
-        <p style={{ color: "#666" }}>Enter the property code given by your owner</p>
-        <input
-          type="text"
-          placeholder="Property Code"
-          value={propertyCode}
-          onChange={(e) => setPropertyCode(e.target.value)}
-          style={{
-            padding: "8px",
-            marginTop: "10px",
-            borderRadius: "5px",
-            width: "300px",
-            maxWidth: "90%",
-            marginRight: "10px",
-          }}
-        />
-        <button style={buttonStyle} onClick={handleJoinProperty}>
-          Join Property
-        </button>
-        <ToastContainer position="top-right" autoClose={3000} />
-      </div>
-    );
-  }
-
+  
   // Full dashboard if tenant is linked
   return (
     <div style={containerStyle}>
