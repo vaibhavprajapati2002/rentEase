@@ -107,9 +107,9 @@ const OwnerHome = () => {
             <button
               style={buttonStyle}
               onClick={() => {
-                if (item.title.includes("Property")) navigate("/owner/my-properties");
-                else if (item.title.includes("Agreement")) navigate("/tenant/agreement");
-                else if (item.title.includes("Utilities")) navigate("/tenant/utilities");
+                if      (item.title.includes("Property")) navigate("/owner/my-properties");
+                else if (item.title.includes(" View Tenants")) navigate("/owner/view-tenant");
+                else if (item.title.includes("Utilities")) navigate("/owner/utilities");
                 else if (item.title.includes("Rent Payment")) navigate("/tenant/rent");
                 else if (item.title.includes("Complaints")) navigate("/tenant/complaints");
                 else if (item.title.includes("Profile")) navigate("/tenant/profile");

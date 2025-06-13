@@ -2,6 +2,8 @@ const express = require('express');
 const userRoutes = require('./routes/user');
 const propertyRoutes = require('./routes/Property');
 const TenantRoutes = require('./routes/Tenant');
+const OwnerRoutes = require('./routes/Owner');
+const UtilityRoutes = require('./routes/Utility.js');
 const app = express();
 const cors = require('cors');
 const path = require("path");
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use('/', userRoutes);
 app.use('/property', propertyRoutes);
 app.use('/tenant', TenantRoutes);
+app.use('/owner', OwnerRoutes);
+app.use('/owner/utilities', UtilityRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 module.exports = app;

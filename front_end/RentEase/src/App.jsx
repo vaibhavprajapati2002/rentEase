@@ -20,6 +20,11 @@ import MyProperties from './Owner/Pages/MyProperties.jsx';
 import ViewProperty from './tenant/pages/ViewProperty.jsx';
 
 
+import ViewTenant from './Owner/Pages/ViewTenant.jsx';
+import OwnerUtilities from './Owner/Pages/Utility/OwnerUtilities.jsx';
+import AddUtility from './Owner/Pages/Utility/AddUtility.jsx';
+
+
 
 import Footer from './MyComponent/Footer.jsx';
 function App() {
@@ -48,6 +53,10 @@ function App() {
         {/* Add more releted to Owner  from vaibhav  side  */}
          <Route path="/owner/dashboard" element={<OwnerHome />} />
         <Route path="/owner/my-properties" element={<MyProperties />} />
+        <Route path="/owner/view-tenant" element={<ViewTenant />} />
+        <Route path="/owner/utilities" element={<OwnerUtilities />} />
+        <Route path="/owner/add-utility" element={<AddUtility />} />
+
          
 
 
