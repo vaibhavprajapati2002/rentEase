@@ -110,7 +110,7 @@ const OwnerHome = () => {
                 if      (item.title.includes("Property")) navigate("/owner/my-properties");
                 else if (item.title.includes(" View Tenants")) navigate("/owner/view-tenant");
                 else if (item.title.includes("Utilities")) navigate("/owner/utilities");
-                else if (item.title.includes("Rent Payment")) navigate("/tenant/rent");
+                else if (item.title.includes("Bank Details")) navigate("/owner/bank-details");
                 else if (item.title.includes("Complaints")) navigate("/tenant/complaints");
                 else if (item.title.includes("Profile")) navigate("/tenant/profile");
                 else if (item.title.includes("Owner Info")) navigate("/tenant/owner");

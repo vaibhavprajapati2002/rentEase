@@ -15,14 +15,17 @@ import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
-
-import MyProperties from './Owner/Pages/MyProperties.jsx';
 import ViewProperty from './tenant/pages/ViewProperty.jsx';
 
 
+
+
+
+import MyProperties from './Owner/Pages/Property/MyProperties.jsx';
 import ViewTenant from './Owner/Pages/ViewTenant.jsx';
 import OwnerUtilities from './Owner/Pages/Utility/OwnerUtilities.jsx';
 import AddUtility from './Owner/Pages/Utility/AddUtility.jsx';
+import BankDetails from './Owner/Pages/BankDetails/BankDetails.jsx';
 
 
 
@@ -56,6 +59,7 @@ function App() {
         <Route path="/owner/view-tenant" element={<ViewTenant />} />
         <Route path="/owner/utilities" element={<OwnerUtilities />} />
         <Route path="/owner/add-utility" element={<AddUtility />} />
+        <Route path="/owner/bank-details" element={<BankDetails />} />
 
          
 

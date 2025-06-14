@@ -6,7 +6,6 @@ import {
     MenuItem,
     Button,
     Paper,
-    Grid,
 } from "@mui/material";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +14,8 @@ const AddUtility = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { tenantId, propertyId } = location.state || {};
+    // console.log("Tenant ID:", tenantId);
+    // console.log("Property ID:", propertyId);
 
     const [form, setForm] = useState({
         property: propertyId || "",
@@ -60,69 +61,66 @@ const AddUtility = () => {
                 </Typography>
 
                 <Box component="form" onSubmit={handleSubmit} mt={3}>
-                    <Box component="form" onSubmit={handleSubmit} mt={3}>
-                        <TextField
-                            select
-                            label="Utility Type"
-                            name="utilityType"
-                            value={form.utilityType}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            sx={{ mb: 3 }}
-                        >
-                            {["Electricity", "Water", "Gas"].map((type) => (
-                                <MenuItem key={type} value={type}>
-                                    {type}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                    <TextField
+                        select
+                        label="Utility Type"
+                        name="utilityType"
+                        value={form.utilityType}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        sx={{ mb: 3 }}
+                    >
+                        {["Electricity", "Water", "Gas"].map((type) => (
+                            <MenuItem key={type} value={type}>
+                                {type}
+                            </MenuItem>
+                        ))}
+                    </TextField>
 
-                        <TextField
-                            label="Month"
-                            name="month"
-                            type="month"
-                            value={form.month}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            InputLabelProps={{ shrink: true }}
-                            sx={{ mb: 3 }}
-                        />
+                    <TextField
+                        label="Month"
+                        name="month"
+                        type="month"
+                        value={form.month}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        InputLabelProps={{ shrink: true }}
+                        sx={{ mb: 3 }}
+                    />
 
-                        <TextField
-                            label="Usage (units)"
-                            name="usage"
-                            type="number"
-                            value={form.usage}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            sx={{ mb: 3 }}
-                        />
+                    <TextField
+                        label="Usage (units)"
+                        name="usage"
+                        type="number"
+                        value={form.usage}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        sx={{ mb: 3 }}
+                    />
 
-                        <TextField
-                            label="Unit Cost"
-                            name="unitCost"
-                            type="number"
-                            value={form.unitCost}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            sx={{ mb: 3 }}
-                        />
+                    <TextField
+                        label="Unit Cost"
+                        name="unitCost"
+                        type="number"
+                        value={form.unitCost}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        sx={{ mb: 3 }}
+                    />
 
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            sx={{ mt: 1 }}
-                        >
-                            Add Bill
-                        </Button>
-                    </Box>
-
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        sx={{ mt: 1 }}
+                    >
+                        Add Bill
+                    </Button>
                 </Box>
             </Paper>
         </Box>
