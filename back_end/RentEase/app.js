@@ -5,7 +5,9 @@ const TenantRoutes = require('./routes/Tenant');
 const OwnerRoutes = require('./routes/Owner');
 const UtilityRoutes = require('./routes/Utility.js');
 const BankDetailsRoutes = require('./routes/BankDetails');
-const RentStatusRoutes = require('./routes/RentStatus'); // Assuming you have a RentStatusRoutes file
+const RentStatusRoutes = require('./routes/RentStatus');
+const OwnerTermsAndConditionRoutes = require('./routes/OwnerTermsAndCondition');
+const PrivacyAndPolicyRoutes = require('./routes/PrivacyAndPolicy');
 const app = express();
 const cors = require('cors');
 const path = require("path");
@@ -21,7 +23,10 @@ app.use('/tenant', TenantRoutes);
 app.use('/owner', OwnerRoutes);
 app.use('/owner/utilities', UtilityRoutes);
 app.use('/bank-details', BankDetailsRoutes);
-app.use("/rent-status", RentStatusRoutes); // Add RentStatus routes
+app.use("/rent-status", RentStatusRoutes); 
+app.use('/owner/terms', OwnerTermsAndConditionRoutes);
+app.use('/owner/privacy', PrivacyAndPolicyRoutes);
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

@@ -26,6 +26,9 @@ import ViewTenant from './Owner/Pages/ViewTenant.jsx';
 import OwnerUtilities from './Owner/Pages/Utility/OwnerUtilities.jsx';
 import AddUtility from './Owner/Pages/Utility/AddUtility.jsx';
 import BankDetails from './Owner/Pages/BankDetails/BankDetails.jsx';
+import RentStatus from './Owner/Pages/RentStatus/RentStatus.jsx';
+import TermsAndCondition from './Owner/Pages/TermsAndCondition/TermsAndCondition.jsx';
+import PrivacyAndPolicy from './Owner/Pages/PrivacyAndPolicy/PrivacyAndPoicy.jsx';
 
 
 
@@ -60,6 +63,9 @@ function App() {
         <Route path="/owner/utilities" element={<OwnerUtilities />} />
         <Route path="/owner/add-utility" element={<AddUtility />} />
         <Route path="/owner/bank-details" element={<BankDetails />} />
+        <Route path="/owner/rent-status" element={<RentStatus />} />
+        <Route path="/owner/terms-and-conditions" element={<TermsAndCondition />} />
+        <Route path="/owner/privacy-policy" element={<PrivacyAndPolicy />} />
 
          
 

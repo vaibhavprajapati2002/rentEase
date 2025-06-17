@@ -111,10 +111,12 @@ const OwnerHome = () => {
                 else if (item.title.includes(" View Tenants")) navigate("/owner/view-tenant");
                 else if (item.title.includes("Utilities")) navigate("/owner/utilities");
                 else if (item.title.includes("Bank Details")) navigate("/owner/bank-details");
-                else if (item.title.includes("Complaints")) navigate("/tenant/complaints");
-                else if (item.title.includes("Profile")) navigate("/tenant/profile");
-                else if (item.title.includes("Owner Info")) navigate("/tenant/owner");
-                else if (item.title.includes("Rent Status")) navigate("/tenant/status");
+                else if (item.title.includes("Rent Status")) navigate("/owner/rent-status");
+                //  else if (item.title.includes("Rent collection")) navigate("/tenant/profile");
+                else if (item.title.includes("Terms & Condition")) navigate("/owner/terms-and-conditions");
+               
+                
+                else if (item.title.includes("Privacy and Policy")) navigate("/owner/privacy-policy");
                 else if (item.title.includes("Payment History")) navigate("/tenant/history");
                 else alert("This feature is coming soon!");
               }}

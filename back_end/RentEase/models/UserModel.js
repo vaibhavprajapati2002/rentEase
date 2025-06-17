@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema({
     ref: 'Property',
     default: null,
   },
+  termsAndConditions: {
+  type: String,
+  default: "",
+},
+privacyAndPolicy: {
+  type: String,
+  default: "",
+},
 });
 
 module.exports = mongoose.model('User', userSchema);

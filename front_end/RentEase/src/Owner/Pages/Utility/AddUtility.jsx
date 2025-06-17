@@ -14,8 +14,8 @@ const AddUtility = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { tenantId, propertyId } = location.state || {};
-    // console.log("Tenant ID:", tenantId);
-    // console.log("Property ID:", propertyId);
+    console.log("Tenant ID:", tenantId);
+    console.log("Property ID:", propertyId);
 
     const [form, setForm] = useState({
         property: propertyId || "",
