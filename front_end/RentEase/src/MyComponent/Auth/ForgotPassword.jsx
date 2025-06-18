@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ForgotPassword = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
@@ -11,7 +12,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     console.log  ("Email submitted:", email);
     try {
-      const response = await axios.post("http://localhost:5000/verify-email", { email });
+      const response = await axios.post(`${BASE_URL}/verify-email`, { email });
       if (response.data.success) {
         navigate(`/reset-password/${email}`);
       }

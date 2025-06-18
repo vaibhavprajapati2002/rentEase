@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const OwnerHome = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const OwnerHome = () => {
       if (!token) return navigate("/login");
 
       try {
-        const res = await axios.get("http://localhost:5000/me", {
+        const res = await axios.get(`${BASE_URL}/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);

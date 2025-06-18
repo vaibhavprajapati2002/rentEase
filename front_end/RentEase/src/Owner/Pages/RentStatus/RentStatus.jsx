@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 
 const RentStatus = () => {
+ 
   const [rentRecords, setRentRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

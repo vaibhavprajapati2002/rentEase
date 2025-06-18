@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 
-const PropertyDetails = () => {
+const AssignedProperty = () => {
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,8 +42,6 @@ const PropertyDetails = () => {
       </Typography>
 
       <Paper elevation={3} sx={{ padding: 3, borderRadius: 2 }}>
-        <img src={`${API_URL}/uploads/${property.image}`} alt="Property"  style={{height:"300px",width:"300px"}}/>
-
         <Typography variant="h6">Name: {property.name}</Typography>
         <Typography>Address: {property.address}</Typography>
         <Typography>City: {property.city}</Typography>
@@ -55,4 +53,4 @@ const PropertyDetails = () => {
   );
 };
 
-export default PropertyDetails;
+export default AssignedProperty;

@@ -12,8 +12,8 @@ const app = express();
 const cors = require('cors');
 const path = require("path");
 app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true // only if you're using cookies
+  origin: ["http://localhost:5173", "http://192.168.29.158:5173"], // ✅ Add your local IP here
+  credentials: true
 }));
 
 app.use(express.json());

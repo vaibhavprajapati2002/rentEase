@@ -19,6 +19,7 @@ import logo from "../../assets/images/logo.png";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Role = () => {
+    const BASE_URL = import.meta.env.VITE_API_URL;
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ const Role = () => {
         setLoading(true);
 
         try {
-            await axios.post("http://localhost:5000/define-role",{
+            await axios.post(`${BASE_URL}/define-role`,{
                 phone,
                 role
             })

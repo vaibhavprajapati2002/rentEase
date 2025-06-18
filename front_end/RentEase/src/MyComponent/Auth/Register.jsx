@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/send-otp", {
+      const response = await axios.post(`${BASE_URL}/send-otp`, {
         phone: phone
       });
       // console.log(response.data);

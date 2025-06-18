@@ -5,11 +5,12 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const TenantHome = () => {
+  API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -17,7 +18,7 @@ const TenantHome = () => {
       if (!token) return navigate("/login");
 
       try {
-        const res = await axios.get("http://localhost:5000/me", {
+        const res = await axios.get(`${API_URL}/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const propertyId = res.data.property;
@@ -36,7 +37,7 @@ const TenantHome = () => {
     fetchUser();
   }, [navigate]);
 
-  
+
 
   if (loading)
     return <div style={{ padding: "2rem", fontSize: "1.2rem" }}>Loading...</div>;
@@ -72,7 +73,7 @@ const TenantHome = () => {
     fontSize: "0.9rem",
   };
 
-  
+
   // Full dashboard if tenant is linked
   return (
     <div style={containerStyle}>

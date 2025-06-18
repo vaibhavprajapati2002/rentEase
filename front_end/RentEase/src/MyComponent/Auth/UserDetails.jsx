@@ -18,6 +18,7 @@ import logo from "../../assets/images/logo.png";
 import axios from "axios";
 
 const UserDetails = () => {
+    const BASE_URL = import.meta.env.VITE_API_URL;
     const location = useLocation();
     const navigate = useNavigate();
     const { phone, role } = location.state || {};
@@ -69,7 +70,7 @@ const UserDetails = () => {
         validationSchema,
         onSubmit: async (values) => {
             try {
-                await axios.post("http://localhost:5000/register-info", {
+                await axios.post(`${BASE_URL}/register-info`, {
                     name: values.name,
                     email: values.email,
                     country: values.country,

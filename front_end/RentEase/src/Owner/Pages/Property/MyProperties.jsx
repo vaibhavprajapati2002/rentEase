@@ -3,13 +3,14 @@ import axios from "axios";
 import PropertyForm from "./PropertyForm";
 
 const MyProperties = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [properties, setProperties] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editData, setEditData] = useState(null);
 
   const fetchProperties = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/property/getProperty", {
+      const res = await axios.get(`${BASE_URL}/property/getProperty`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -22,7 +23,7 @@ const MyProperties = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/property/deleteProperty${id}`, {
+      await axios.delete(`${BASE_URL}/property/deleteProperty${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -67,7 +68,7 @@ const MyProperties = () => {
         {properties.map((property) => (
           <div className="col-md-4 mb-3" key={property._id}>
             <div className="card">
-              <img src={`http://localhost:5000/uploads/${property.image}`} alt="..." className="card-img-top" />
+              <img src={`${BASE_URL}/uploads/${property.image}`} alt="..." className="card-img-top" />
               <div className="card-body">
                 <h5 className="card-title">{property.name}</h5>
                 <p>{property.city}, {property.state}</p>

@@ -33,7 +33,7 @@ const AssignProperty = () => {
     }
 
     // Check if tenant already has a property
-    const res = await axios.get("http://localhost:5000/me", {
+    const res = await axios.get(`${API_URL}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

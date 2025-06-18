@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -55,9 +56,9 @@ const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
 
     try {
       if (initialData?._id) {
-        await axios.put(`http://localhost:5000/property/updateProperty/${initialData._id}`, form, config);
+        await axios.put(`${BASE_URL}/property/updateProperty/${initialData._id}`, form, config);
       } else {
-        await axios.post("http://localhost:5000/property/createProperty", form, config);
+        await axios.post(`${BASE_URL}/property/createProperty`, form, config);
       }
       onSuccess();
     } catch (err) {
