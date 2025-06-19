@@ -7,10 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 const TenantHome = () => {
   API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
 
+=======
+>>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,7 +25,7 @@ const TenantHome = () => {
         });
         const propertyId = res.data.property;
         if (!propertyId) {
-          toast.error("You need to assign a property first.");
+          toast.error("Please assign a property first.");
           return navigate("/tenant/view-property");
         }
         setUser(res.data);
@@ -37,11 +39,110 @@ const TenantHome = () => {
     fetchUser();
   }, [navigate]);
 
+<<<<<<< HEAD
 
+=======
+  const styles = {
+    container: {
+      padding: "20px",
+      maxWidth: "1200px",
+      margin: "auto",
+      fontFamily: "'Segoe UI', sans-serif",
+    },
+    header: {
+      fontSize: "1.8rem",
+      fontWeight: "bold",
+      marginBottom: "10px",
+      color: "#333",
+    },
+    subHeader: {
+      color: "#777",
+      marginBottom: "20px",
+      fontSize: "1rem",
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+      gap: "20px",
+      marginTop: "20px",
+    },
+    card: {
+      backgroundColor: "#fff",
+      borderRadius: "12px",
+      padding: "16px",
+      boxShadow: "0 6px 15px rgba(0,0,0,0.06)",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      transition: "transform 0.2s ease-in-out",
+    },
+    cardHover: {
+      transform: "scale(1.02)",
+    },
+    cardTitle: {
+      fontSize: "1.2rem",
+      fontWeight: "600",
+      marginBottom: "6px",
+    },
+    cardDesc: {
+      fontSize: "0.9rem",
+      color: "#555",
+      marginBottom: "10px",
+    },
+    button: {
+      alignSelf: "flex-start",
+      padding: "8px 14px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "6px",
+      fontSize: "0.85rem",
+      cursor: "pointer",
+    },
+  };
+
+  const cardData = [
+    {
+      group: "Profile",
+      items: [
+        { title: "👤 Your Profile", desc: "Update your info", path: "/tenant/profile" },
+        { title: "📞 Owner Info", desc: "View and contact owner", path: "/tenant/owner" },
+      ],
+    },
+    {
+      group: "Payments",
+      items: [
+        { title: "💳 Rent Payment", desc: "Pay rent online", path: "/tenant/rent" },
+        { title: "📜 Payment History", desc: "Track previous payments", path: "/tenant/history" },
+        { title: "📅 Rent Status", desc: "Check current status", path: "/tenant/status" },
+      ],
+    },
+    {
+      group: "Services",
+      items: [
+        { title: "🏠 Property Details", desc: "Your assigned property", path: "/tenant/property" },
+        { title: "📄 Rental Agreement", desc: "Agreement details", path: "/tenant/agreement" },
+        { title: "💡 Utilities", desc: "Electricity/Water bills", path: "/tenant/utilities" },
+      ],
+    },
+    {
+      group: "Support",
+      items: [
+        { title: "📢 Complaints", desc: "Raise service issues", path: "/tenant/complaints" },
+        { title: "💬 Chat (Coming Soon)", desc: "Chat with owner", path: null },
+      ],
+    },
+  ];
+>>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
 
   if (loading)
-    return <div style={{ padding: "2rem", fontSize: "1.2rem" }}>Loading...</div>;
+    return (
+      <div style={{ padding: "2rem", textAlign: "center", fontSize: "1.2rem" }}>
+        ⏳ Loading your dashboard...
+      </div>
+    );
 
+<<<<<<< HEAD
   const containerStyle = {
     maxWidth: "1200px",
     margin: "40px auto",
@@ -75,56 +176,38 @@ const TenantHome = () => {
 
 
   // Full dashboard if tenant is linked
+=======
+>>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
   return (
-    <div style={containerStyle}>
-      <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "30px" }}>
-        <h2 style={{ margin: 0 }}>Welcome, {user.name || "Tenant"}</h2>
+    <div style={styles.container}>
+      <div style={styles.header}>Welcome, {user?.name || "Tenant"} 👋</div>
+      <div style={styles.subHeader}>
+        Email: {user.email} | Phone: {user.phone} | Country: {user.country}
       </div>
 
-      <div style={{ marginBottom: "30px", color: "#555" }}>
-        <p>Email: {user.email}</p>
-        <p>Phone: {user.phone}</p>
-        <p>Country: {user.country}</p>
-      </div>
-
-      <div style={cardGrid}>
-        {[
-          { title: "🏠 Property Details", desc: "View your current property info & lease." },
-          { title: "📄 Rental Agreement", desc: "View and manage rental agreements." },
-          { title: "💡 Utilities", desc: "Track your electricity & water usage." },
-          { title: "💳 Rent Payment", desc: "Pay rent and see payment history." },
-          { title: "👤 Your Profile", desc: "Update your personal info and details." },
-          { title: "📅 Rent Status", desc: "View next due date and current status." },
-          { title: "📜 Payment History", desc: "Track monthly rent payments made." },
-          { title: "📞 Owner Info", desc: "Contact your property owner." },
-          { title: "📢 Complaints", desc: "Raise and track issues with owner." },
-          { title: "💬 Chat (Coming Soon)", desc: "Chat with owner in real-time." },
-        ].map((item, idx) => (
-          <div key={idx} style={cardStyle}>
-            <div style={{ fontSize: "1.3rem", fontWeight: "600", marginBottom: "8px" }}>
-              {item.title}
-            </div>
-            <p style={{ color: "#666", fontSize: "0.9rem" }}>{item.desc}</p>
-            <button
-              style={buttonStyle}
-              onClick={() => {
-                if (item.title.includes("Property")) navigate("/tenant/property");
-                else if (item.title.includes("Agreement")) navigate("/tenant/agreement");
-                else if (item.title.includes("Utilities")) navigate("/tenant/utilities");
-                else if (item.title.includes("Rent Payment")) navigate("/tenant/rent");
-                else if (item.title.includes("Complaints")) navigate("/tenant/complaints");
-                else if (item.title.includes("Profile")) navigate("/tenant/profile");
-                else if (item.title.includes("Owner Info")) navigate("/tenant/owner");
-                else if (item.title.includes("Rent Status")) navigate("/tenant/status");
-                else if (item.title.includes("Payment History")) navigate("/tenant/history");
-                else alert("This feature is coming soon!");
-              }}
-            >
-              View
-            </button>
+      {cardData.map((section, idx) => (
+        <div key={idx} style={{ marginBottom: "30px" }}>
+          <div style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "10px", color: "#444" }}>
+            {section.group}
           </div>
-        ))}
-      </div>
+          <div style={styles.grid}>
+            {section.items.map((item, index) => (
+              <div key={index} style={styles.card}>
+                <div style={styles.cardTitle}>{item.title}</div>
+                <div style={styles.cardDesc}>{item.desc}</div>
+                <button
+                  style={styles.button}
+                  onClick={() =>
+                    item.path ? navigate(item.path) : toast.info("This feature is coming soon!")
+                  }
+                >
+                  View
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
