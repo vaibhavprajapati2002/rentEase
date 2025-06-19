@@ -9,10 +9,10 @@ const TenantHome = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
-=======
->>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
+// =======
+// >>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,9 +39,9 @@ const TenantHome = () => {
     fetchUser();
   }, [navigate]);
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
-=======
+// =======
   const styles = {
     container: {
       padding: "20px",
@@ -133,7 +133,7 @@ const TenantHome = () => {
       ],
     },
   ];
->>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
+// >>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
 
   if (loading)
     return (
@@ -142,7 +142,7 @@ const TenantHome = () => {
       </div>
     );
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
   const containerStyle = {
     maxWidth: "1200px",
     margin: "40px auto",
@@ -176,8 +176,8 @@ const TenantHome = () => {
 
 
   // Full dashboard if tenant is linked
-=======
->>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
+// =======
+// >>>>>>> f9c8122cdd87a302975beaa875a3bf872ef638ce
   return (
     <div style={styles.container}>
       <div style={styles.header}>Welcome, {user?.name || "Tenant"} 👋</div>
