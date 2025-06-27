@@ -2,73 +2,48 @@ const mongoose = require("mongoose");
 
 const propertySchema = new mongoose.Schema(
   {
-    owner: {
+    /** ──────────────────────────────────────────────
+     *  Reference to the owning user
+     *  ──────────────────────────────────────────────*/
+    ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User",              // ✅ should match your actual model name (it does!)
       required: true,
+      index: true,              // ✅ good for lookup performance
     },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    pincode: {
-      type: String,
-      required: true,
-    },
+
+    /** Core details */
+    name:       { type: String, required: true, trim: true },    // ✅
+    address:    { type: String, required: true },                // ✅
+    city:       { type: String, required: true },                // ✅
+    state:      { type: String, required: true },                // ✅
+    pincode:    { type: String, required: true },                // ✅
+
+    /** Property characteristics */
     type: {
       type: String,
       enum: ["Apartment", "House", "Flat", "Villa", "PG", "Other"],
       required: true,
-    },
-    bhk: {
-      type: Number,
-      required: true,
-    },
-    rent: {
-      type: Number,
-      required: true,
-    },
-    deposit: {
-      type: Number,
-      required: true,
-    },
-    size: {
-      type: Number, // in sq ft
-      required: true,
-    },
-    availableFrom: {
-      type: Date,
-      required: true,
-    },
-    description: {
-      type: String,
-    },
-    image: {
-      type: String, // store image filename or URL
-      default: "",
-    },
+    },                                                           // ✅
+    bhk:        { type: Number, required: true },                // ✅
+    size:       { type: Number, required: true },                // ✅
+
+    /** Financials */
+    rent:       { type: Number, required: true },                // ✅
+    deposit:    { type: Number, required: true },                // ✅
+
+    /** Availability & extras */
+    availableFrom: { type: Date, required: true },               // ✅
+    description:   { type: String },                             // ✅
+    image:         { type: String, default: "" },                // ✅
+
     status: {
       type: String,
       enum: ["Available", "Rented"],
       default: "Available",
-    },
+    },                                                           // ✅
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Property", propertySchema);

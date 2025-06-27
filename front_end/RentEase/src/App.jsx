@@ -16,6 +16,7 @@ import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
 import ViewProperty from './tenant/pages/ViewProperty.jsx';
+import TenantProfile from './Tenant/pages/TenantProfile.jsx';
 
 
 
@@ -32,6 +33,8 @@ import PrivacyAndPolicy from './Owner/Pages/PrivacyAndPolicy/PrivacyAndPoicy.jsx
 
 
 
+
+import OwnerInfo from './Tenant/pages/OwnerInfo.jsx';
 import Footer from './MyComponent/Footer.jsx';
 function App() {
 
@@ -79,6 +82,8 @@ function App() {
         <Route path="/tenant/dashboard" element={<TenantHome />} />
         <Route path="/tenant/property" element={<PropertyDetails />} />
         <Route path="/tenant/view-property" element={<ViewProperty />} />
+        <Route path="/tenant/owner-info" element={<OwnerInfo />} />
+        <Route path="/tenant/profile" element={<TenantProfile />} />
 
 
         {/* Add more routes as needed */}

@@ -1,143 +1,323 @@
+// TenantProfile.jsx
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardContent,
+  Avatar,
+  Typography,
+  CircularProgress,
+  Alert,
+  IconButton,
+  TextField,
+  Button,
+  Grid,
+  Collapse,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+/* helper: convert dd/mm/yyyy → yyyy-mm-dd */
+const toISO = (d) => {
+  if (!d || d.includes("-")) return d;
+  const [day, month, year] = d.split("/");
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+};
 
 const TenantProfile = () => {
-  const [user, setUser] = useState(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", country: "" });
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
+  const [profile, setProfile]   = useState(null);
+  const [editData, setEditData] = useState({});
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview]   = useState("");
+  const [loading, setLoading]   = useState(true);
+  const [saving, setSaving]     = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [alert, setAlert]       = useState({ type: "", msg: "" });
+
+  /* ─── Fetch profile once ─── */
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
+    (async () => {
       try {
-        const res = await axios.get("http://localhost:5000/me", {
+        const { data } = await axios.get(`${BASE_URL}/tenant/tenant-profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(res.data);
-        setForm({
-          name: res.data.name || "",
-          email: res.data.email || "",
-          phone: res.data.phone || "",
-          country: res.data.country || "",
-        });
+        setProfile(data);
       } catch (err) {
-        toast.error("Failed to load profile.");
+        setAlert({
+          type: "error",
+          msg: err?.response?.data?.error || "Failed to load profile",
+        });
       } finally {
         setLoading(false);
       }
-    };
-    fetchProfile();
+    })();
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  /* ─── Start editing ─── */
+  const startEdit = () => {
+    setEditData({
+      name:             profile.name             || "",
+      email:            profile.email            || "",
+      phone:            profile.phone            || "",
+      country:          profile.country          || "",
+      fatherName:       profile.fatherName       || "",
+      permanentAddress: profile.permanentAddress || "",
+      gender:           profile.gender           || "",
+      dob:              profile.dob ? profile.dob.slice(0, 10) : "",
+      password:         "",
+    });
+    setImageFile(null);
+    setPreview("");
+    setEditMode(true);
   };
 
-  const handleUpdate = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      await axios.put(
-        "http://localhost:5000/tenant/update-profile",
-        { ...form },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      toast.success("Profile updated successfully.");
-    } catch (err) {
-      toast.error("Update failed.");
+  const cancelEdit = () => {
+    setEditMode(false);
+    setAlert({ type: "", msg: "" });
+  };
+
+  const handleChange = (e) =>
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const styles = {
-    container: {
-      maxWidth: "600px",
-      margin: "40px auto",
-      padding: "20px",
-      fontFamily: "'Segoe UI', sans-serif",
-    },
-    title: {
-      fontSize: "1.6rem",
-      fontWeight: "bold",
-      marginBottom: "20px",
-      color: "#333",
-    },
-    label: {
-      display: "block",
-      marginTop: "12px",
-      fontSize: "0.95rem",
-      color: "#555",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      fontSize: "0.95rem",
-      marginTop: "5px",
-      borderRadius: "6px",
-      border: "1px solid #ccc",
-      boxSizing: "border-box",
-    },
-    button: {
-      marginTop: "20px",
-      padding: "10px 20px",
-      backgroundColor: "#007bff",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontSize: "1rem",
-    },
+  /* ─── Logout handler ─── */
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setAlert({ type: "success", msg: "Logged out successfully." });
+    setTimeout(() => navigate("/"), 800);          // adjust route as needed
   };
 
+  /* ─── Save profile ─── */
+  const saveProfile = async () => {
+    setSaving(true);
+    try {
+      const fd = new FormData();
+      Object.entries(editData).forEach(([k, v]) => {
+        if (!v) return;
+        fd.append(k, k === "dob" ? toISO(v) : v);
+      });
+      if (imageFile) fd.append("profileImage", imageFile);
+
+      const { data } = await axios.put(
+        `${BASE_URL}/tenant/update-tenant-profile`,
+        fd,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setProfile(data.tenant);
+      setAlert({ type: "success", msg: "Profile updated successfully" });
+      setEditMode(false);
+    } catch (err) {
+      setAlert({
+        type: "error",
+        msg: err?.response?.data?.error || "Update failed",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /* ─── Loading / error states ─── */
   if (loading)
-    return <div style={{ padding: "2rem", textAlign: "center" }}>Loading Profile...</div>;
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
 
+  if (!profile)
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Alert severity="error">Profile not found.</Alert>
+      </Box>
+    );
+
+  /* avatar source */
+  const avatarSrc = preview
+    ? preview
+    : profile.profileImage
+    ? profile.profileImage.startsWith("http")
+      ? profile.profileImage
+      : `${BASE_URL}/uploads/${profile.profileImage}`
+    : undefined;
+
+  const { property } = profile;
+
+  /* ─── Render ─── */
   return (
-    <div style={styles.container}>
-      <div style={styles.title}>Your Profile</div>
+    <Box mt={4} display="flex" justifyContent="center">
+      <Card sx={{ maxWidth: 640, width: "100%", p: 2 }}>
+        <CardHeader
+          avatar={<Avatar src={avatarSrc} sx={{ width: 56, height: 56 }} />}
+          title={profile.name}
+          subheader={profile.email}
+          action={
+            !editMode && (
+              <>
+                <IconButton onClick={startEdit} sx={{ mr: 1 }}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={handleLogout} color="error">
+                  <LogoutIcon />
+                </IconButton>
+              </>
+            )
+          }
+        />
 
-      <label style={styles.label}>Name</label>
-      <input
-        style={styles.input}
-        type="text"
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-      />
+        <CardContent>
+          {/* Alerts */}
+          <Collapse in={alert.msg !== ""}>
+            <Alert
+              severity={alert.type}
+              action={
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  onClick={() => setAlert({ type: "", msg: "" })}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              {alert.msg}
+            </Alert>
+          </Collapse>
 
-      <label style={styles.label}>Email</label>
-      <input
-        style={styles.input}
-        type="email"
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-      />
+          {/* READ-ONLY */}
+          {!editMode && (
+            <Box>
+              {[
+                ["Phone", profile.phone],
+                ["Country", profile.country],
+                ["Father Name", profile.fatherName],
+                ["Permanent Address", profile.permanentAddress],
+                ["Gender", profile.gender],
+                ["DOB", profile.dob?.slice(0, 10)],
+              ].map(
+                ([label, val]) =>
+                  val && (
+                    <Typography key={label} variant="body2" mb={1}>
+                      {label}: {val}
+                    </Typography>
+                  )
+              )}
+              {property && (
+                <Typography variant="body2">
+                  Property: {property.name} — {property.address}
+                </Typography>
+              )}
+            </Box>
+          )}
 
-      <label style={styles.label}>Phone</label>
-      <input
-        style={styles.input}
-        type="text"
-        name="phone"
-        value={form.phone}
-        onChange={handleChange}
-      />
+          {/* EDIT MODE */}
+          {editMode && (
+            <Box component="form" noValidate autoComplete="off">
+              <Grid container spacing={2}>
+                {[
+                  "name",
+                  "email",
+                  "phone",
+                  "country",
+                  "fatherName",
+                  "permanentAddress",
+                  "gender",
+                ].map((field) => (
+                  <Grid item xs={12} sm={6} key={field}>
+                    <TextField
+                      label={field.replace(/([A-Z])/g, " $1")}
+                      name={field}
+                      value={editData[field]}
+                      onChange={handleChange}
+                      fullWidth
+                      size="small"
+                    />
+                  </Grid>
+                ))}
 
-      <label style={styles.label}>Country</label>
-      <input
-        style={styles.input}
-        type="text"
-        name="country"
-        value={form.country}
-        onChange={handleChange}
-      />
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    type="date"
+                    label="DOB"
+                    name="dob"
+                    value={editData.dob}
+                    onChange={handleChange}
+                    fullWidth
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
 
-      <button style={styles.button} onClick={handleUpdate}>
-        Update Profile
-      </button>
+                <Grid item xs={12}>
+                  <TextField
+                    label="New Password"
+                    name="password"
+                    type="password"
+                    value={editData.password}
+                    onChange={handleChange}
+                    fullWidth
+                    size="small"
+                  />
+                </Grid>
 
-      <ToastContainer position="top-right" autoClose={3000} />
-    </div>
+                <Grid item xs={12}>
+                  <Button variant="outlined" component="label">
+                    Upload Profile Image
+                    <input hidden type="file" accept="image/*" onChange={handleFileChange} />
+                  </Button>
+                  {preview && (
+                    <Box mt={2}>
+                      <Avatar src={preview} sx={{ width: 80, height: 80 }} />
+                    </Box>
+                  )}
+                </Grid>
+              </Grid>
+
+              <Box display="flex" justifyContent="flex-end" mt={2} gap={1}>
+                <Button
+                  variant="outlined"
+                  onClick={cancelEdit}
+                  startIcon={<CloseIcon />}
+                  disabled={saving}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={saveProfile}
+                  startIcon={<SaveIcon />}
+                  disabled={saving}
+                >
+                  {saving ? "Saving…" : "Save"}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

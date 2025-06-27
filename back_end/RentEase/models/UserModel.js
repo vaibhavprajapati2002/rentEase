@@ -11,6 +11,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   country: { type: String },
 
+  fatherName: { type: String, default: "" },
+  permanentAddress: { type: String, default: "" },
+  gender: { type: String, enum:["Male", "Female","other"] },
+  dob:Date,
+  profileImage: { type: String, default: "" },
+
+
   // 👇 NEW: reference to Property
   property: {
     type: mongoose.Schema.Types.ObjectId,

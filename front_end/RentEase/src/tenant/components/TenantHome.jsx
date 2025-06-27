@@ -112,7 +112,7 @@ const TenantHome = () => {
       group: "Profile",
       items: [
         { title: "👤 Your Profile", desc: "Update your info", path: "/tenant/profile" },
-        { title: "📞 Owner Info", desc: "View and contact owner", path: "/tenant/owner" },
+        { title: "📞 Owner Info", desc: "View and contact owner", path: "/tenant/owner-info" },
       ],
     },
     {
