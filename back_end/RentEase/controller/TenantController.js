@@ -2,6 +2,7 @@
 const User = require("../models/UserModel");
 const Property = require("../models/PropertyModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
  
 
 /* ------------------------- 1. Assign property ------------------------ */
@@ -96,6 +97,43 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+
+exports.getTenantInfo = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "Token missing" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const tenant = await User.findById(decoded.id).populate("property");
+
+    if (!tenant || tenant.role !== "tenant") {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
+    const property = tenant.property;
+
+    if (!property) {
+      return res.status(404).json({ message: "Tenant not assigned to a property" });
+    }
+
+    const owner = await User.findById(property.ownerId);
+
+    if (!owner) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      tenant,
+      property,
+      owner,
+      rentAmount: property.rentAmount,
+    });
+  } catch (err) {
+    console.error("Error in /tenant/me:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 /* ------------------------------------------------------------------ */
 /*  PUT /tenant/profile                                               */

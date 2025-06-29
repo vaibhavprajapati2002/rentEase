@@ -17,6 +17,7 @@ import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
 import ViewProperty from './tenant/pages/ViewProperty.jsx';
 import TenantProfile from './Tenant/pages/TenantProfile.jsx';
+import RentPayment from './Tenant/pages/RentPayment.jsx';
 
 
 
@@ -84,6 +85,7 @@ function App() {
         <Route path="/tenant/view-property" element={<ViewProperty />} />
         <Route path="/tenant/owner-info" element={<OwnerInfo />} />
         <Route path="/tenant/profile" element={<TenantProfile />} />
+        <Route path="/tenant/rent-payment" element={<RentPayment />} />
 
 
         {/* Add more routes as needed */}

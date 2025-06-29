@@ -118,7 +118,7 @@ const TenantHome = () => {
     {
       group: "Payments",
       items: [
-        { title: "💳 Rent Payment", desc: "Pay rent online", path: "/tenant/rent" },
+        { title: "💳 Rent Payment", desc: "Pay rent online", path: "/tenant/rent-payment" },
         { title: "📜 Payment History", desc: "Track previous payments", path: "/tenant/history" },
         { title: "📅 Rent Status", desc: "Check current status", path: "/tenant/status" },
       ],
