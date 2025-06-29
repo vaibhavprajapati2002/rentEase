@@ -8,6 +8,10 @@ const BankDetailsRoutes = require('./routes/BankDetails');
 const RentStatusRoutes = require('./routes/RentStatus');
 const OwnerTermsAndConditionRoutes = require('./routes/OwnerTermsAndCondition');
 const PrivacyAndPolicyRoutes = require('./routes/PrivacyAndPolicy');
+
+
+
+const PaymentRoutes = require('./routes/Payment'); // Import the Payment routes
 const app = express();
 const cors = require('cors');
 const path = require("path");
@@ -26,6 +30,9 @@ app.use('/bank-details', BankDetailsRoutes);
 app.use("/rent-status", RentStatusRoutes); 
 app.use('/owner/terms', OwnerTermsAndConditionRoutes);
 app.use('/owner/privacy', PrivacyAndPolicyRoutes);
+
+app.use("/api/payment",PaymentRoutes );
+
 
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
