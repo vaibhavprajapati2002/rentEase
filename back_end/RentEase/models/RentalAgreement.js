@@ -1,3 +1,4 @@
+// models/RentalAgreement.js
 const mongoose = require("mongoose");
 
 const RentalAgreementSchema = new mongoose.Schema(
@@ -15,27 +16,25 @@ const RentalAgreementSchema = new mongoose.Schema(
     tenant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default: null, // Only required for tenant requests
+      default: null,
     },
     template: {
       type: String,
-      required: true, // Owner must save a base template
+      required: true,
     },
-    filledDetails: {
-      aadhar: { type: String },
-      startDate: { type: Date },
-      durationMonths: { type: Number },
-      additionalNotes: { type: String },
+    filledFields: {
+      tenantName: String,
+      aadharNumber: String,
+      startDate: Date,
+      durationMonths: Number,
     },
     status: {
       type: String,
-      enum: ["template", "pending", "approved", "rejected"],
+      enum: ["template", "requested", "approved", "rejected"],
       default: "template",
     },
   },
-  {
-    timestamps: true, // Automatically creates createdAt and updatedAt
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("RentalAgreement", RentalAgreementSchema);

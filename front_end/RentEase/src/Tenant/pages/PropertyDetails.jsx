@@ -19,6 +19,7 @@ const PropertyDetails = () => {
       });
 
       setProperty(res.data);
+      localStorage.setItem("property_id", res.data._id);
     } catch (err) {
       console.error("Error fetching assigned property:", err);
       setError("Failed to load property details.");

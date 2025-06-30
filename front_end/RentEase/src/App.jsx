@@ -20,6 +20,7 @@ import TenantProfile from './Tenant/pages/TenantProfile.jsx';
 import RentPayment from './Tenant/pages/RentPayment.jsx';
 import TenantTermsAndCondition from './Tenant/pages/TenantTermsAndCondition.jsx';
 import TenantPrivacyPolicy from './Tenant/pages/TenantPrivacyAndPolicy.jsx';
+import TenantRentAgreement from './Tenant/pages/TenantRentAgreement.jsx';
 
 
 
@@ -34,6 +35,7 @@ import RentStatus from './Owner/Pages/RentStatus/RentStatus.jsx';
 import TermsAndCondition from './Owner/Pages/TermsAndCondition/TermsAndCondition.jsx';
 import PrivacyAndPolicy from './Owner/Pages/PrivacyAndPolicy/PrivacyAndPoicy.jsx';
 import RentAgreement from './Owner/Pages/Agreement/OwnerRentAgreement.jsx'; // Assuming this is the correct path
+import AgreementRequests from './Owner/Pages/Agreement/AgreementRequest.jsx';
 
 
 
@@ -76,6 +78,7 @@ function App() {
         <Route path="/owner/terms-and-conditions" element={<TermsAndCondition />} />
         <Route path="/owner/privacy-policy" element={<PrivacyAndPolicy />} />
         <Route path="/owner/view-agreement" element={<RentAgreement />} />
+        <Route path="/owner/agreement-requests" element={<AgreementRequests />} />
 
          
 
@@ -94,6 +97,7 @@ function App() {
         <Route path="/tenant/rent-payment" element={<RentPayment />} />
         <Route path="/tenant/terms-and-conditions" element={<TenantTermsAndCondition />} />
         <Route path="/tenant/privacy-policy" element={<TenantPrivacyPolicy />} />
+        <Route path="/tenant/agreement" element={<TenantRentAgreement />} />
 
 
         {/* Add more routes as needed */}

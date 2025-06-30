@@ -13,5 +13,14 @@ router.post(
   auth, // middleware to verify JWT
   rentalAgreementController.createOrUpdateTemplate
 );
+router.get("/tenant/view-template", auth, rentalAgreementController.getTemplateForTenant);
+router.post("/tenant/request-agreement", auth, rentalAgreementController.submitAgreementRequest);
+
+
+// GET all submitted requests for this owner
+router.get("/requests", auth, rentalAgreementController.getTenantRequestsForOwner);
+
+// PUT respond to a request (approve/reject)
+router.put("/respond/:id", auth, rentalAgreementController.respondToRequest);
 
 module.exports = router;

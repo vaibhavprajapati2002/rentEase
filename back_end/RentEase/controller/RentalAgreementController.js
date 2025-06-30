@@ -1,4 +1,5 @@
 // controllers/rentalAgreementController.js
+const User = require("../models/UserModel");
 
 const RentalAgreement = require("../models/RentalAgreement");
 
@@ -59,3 +60,124 @@ exports.getTemplateByProperty = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// controllers/rentalAgreementController.js
+exports.getTemplateForTenant = async (req, res) => {
+  try {
+    const tenantId = req.user._id;
+    const tenant = await User.findById(tenantId);
+
+    if (!tenant.property) {
+      return res.status(404).json({ message: "Tenant has no assigned property." });
+    }
+
+    const agreement = await RentalAgreement.findOne({
+      property: tenant.property,
+      status: "template",
+    });
+
+    if (!agreement) {
+      return res.status(404).json({ message: "No agreement template found for this property." });
+    }
+
+    res.status(200).json({ template: agreement.template, propertyId: tenant.property });
+  } catch (err) {
+    console.error("Error fetching template:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+// controllers/rentalAgreementController.js
+exports.submitAgreementRequest = async (req, res) => {
+  try {
+    const tenantId = req.user._id;
+    const tenant = await User.findById(tenantId);
+
+    if (!tenant.property) {
+      return res.status(400).json({ message: "Tenant not assigned to a property." });
+    }
+
+    const existingTemplate = await RentalAgreement.findOne({
+      property: tenant.property,
+      status: "template",
+    });
+
+    if (!existingTemplate) {
+      return res.status(404).json({ message: "Agreement template not found." });
+    }
+
+    const { tenantName, aadharNumber, startDate, durationMonths } = req.body;
+
+    const agreementRequest = new RentalAgreement({
+      property: tenant.property,
+      owner: existingTemplate.owner,
+      tenant: tenantId,
+      template: existingTemplate.template,
+      filledFields: {
+        tenantName,
+        aadharNumber,
+        startDate,
+        durationMonths,
+      },
+      status: "requested",
+    });
+
+    await agreementRequest.save();
+
+    res.status(201).json({ message: "Agreement request submitted for approval." });
+  } catch (err) {
+    console.error("Error submitting agreement request:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+// 1. Get all tenant requests for the current owner
+exports.getTenantRequestsForOwner = async (req, res) => {
+  try {
+    const ownerId = req.user._id;
+
+    const requests = await RentalAgreement.find({
+      owner: ownerId,
+      status: "requested",
+    })
+      .populate("tenant", "name email")
+      .populate("property", "name");
+
+    res.json(requests);
+  } catch (err) {
+    console.error("Error fetching requests:", err);
+    res.status(500).json({ message: "Server error while fetching requests" });
+  }
+};
+
+// 2. Respond to a request (approve/reject)
+exports.respondToRequest = async (req, res) => {
+  try {
+    const agreementId = req.params.id;
+    const { status } = req.body; // expected: "approved" or "rejected"
+
+    if (!["approved", "rejected"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const agreement = await RentalAgreement.findById(agreementId);
+
+    if (!agreement) {
+      return res.status(404).json({ message: "Agreement not found" });
+    }
+
+    // 🔄 Updated status check
+    if (agreement.status !== "requested") {
+      return res.status(400).json({ message: "Agreement is not in 'request' state" });
+    }
+
+    agreement.status = status;
+    await agreement.save();
+
+    res.json({ message: `Agreement ${status} successfully` });
+  } catch (err) {
+    console.error("Error updating agreement:", err);
+    res.status(500).json({ message: "Server error while updating agreement" });
+  }
+};
+
