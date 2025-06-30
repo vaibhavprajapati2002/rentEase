@@ -41,7 +41,7 @@ const CustomNavbar = () => {
                 <Nav.Link as={Link} to="/PropertyDetails">
                   <i className="bi bi-house-door"></i> Property
                 </Nav.Link>
-                <Nav.Link as={Link} to={`/${oppositeRole.toLowerCase()}/dashboard`}>
+                <Nav.Link as={Link} to={`/${oppositeRole.toLowerCase()}/owner-info`}>
                   <i className="bi bi-person-check"></i> {oppositeRole}
                 </Nav.Link>
                 <Nav.Link onClick={handleLogout}>
