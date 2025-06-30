@@ -7,7 +7,7 @@ const upload = require("../middleware/upload.js");
 router.post("/createProperty", authMiddleware, upload.single("image"), propertyController.createProperty);
 router.get("/getProperty", authMiddleware, propertyController.getMyProperties);
 router.get("/getProperty:id", authMiddleware, propertyController.getPropertyById);
-router.put("/updateProperty:id", authMiddleware, propertyController.updateProperty);
+router.put("/updateProperty/:id", authMiddleware, propertyController.updateProperty);
 router.delete("/deleteProperty:id", authMiddleware, propertyController.deleteProperty);
 router.get("/allProperty", propertyController.getAllProperties);
 router.get("/tentant/property-details", authMiddleware,propertyController.getTenantProperty);

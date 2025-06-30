@@ -17,11 +17,11 @@ exports.getAllUtilities = async (req, res) => {
     const ownerId = req.user.id;
     const utilities = await Utility.find()
       .populate('tenant', 'name email phone')
-      .populate('property', 'name owner')
+      .populate('property', 'name ownerId')
       .exec();
 
     // Filter to only return those linked to properties owned by the current owner
-    const filtered = utilities.filter(u => u.property?.owner?.toString() === ownerId);
+    const filtered = utilities.filter(u => u.property?.ownerId?.toString() === ownerId);
     res.json(filtered);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch utilities', details: err.message });

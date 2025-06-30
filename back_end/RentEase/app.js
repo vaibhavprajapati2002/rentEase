@@ -8,6 +8,9 @@ const BankDetailsRoutes = require('./routes/BankDetails');
 const RentStatusRoutes = require('./routes/RentStatus');
 const OwnerTermsAndConditionRoutes = require('./routes/OwnerTermsAndCondition');
 const PrivacyAndPolicyRoutes = require('./routes/PrivacyAndPolicy');
+const TenantPrivacyAndPolicyRoutes = require('./routes/TenantPrivacyAndPolicy');
+const TenantTermsAndConditionRoutes = require('./routes/TenantTermsAndCondition');
+const RentalAgreementRoutes = require('./routes/RentalAgreement');
 
 
 
@@ -32,6 +35,9 @@ app.use('/owner/terms', OwnerTermsAndConditionRoutes);
 app.use('/owner/privacy', PrivacyAndPolicyRoutes);
 
 app.use("/api/payment",PaymentRoutes );
+app.use('/tenant/privacy-and-policy', TenantPrivacyAndPolicyRoutes);
+app.use('/tenant/terms-and-conditions', TenantTermsAndConditionRoutes);
+app.use('/rental-agreement', RentalAgreementRoutes);
 
 
 

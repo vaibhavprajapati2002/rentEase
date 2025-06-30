@@ -111,31 +111,82 @@ const TenantHome = () => {
     {
       group: "Profile",
       items: [
-        { title: "👤 Your Profile", desc: "Update your info", path: "/tenant/profile" },
-        { title: "📞 Owner Info", desc: "View and contact owner", path: "/tenant/owner-info" },
+        {
+          title: "👤 Your Profile",
+          desc: "Update your info",
+          path: "/tenant/profile",
+        },
+        {
+          title: "📞 Owner Info",
+          desc: "View and contact owner",
+          path: "/tenant/owner-info",
+        },
       ],
     },
     {
       group: "Payments",
       items: [
-        { title: "💳 Rent Payment", desc: "Pay rent online", path: "/tenant/rent-payment" },
-        { title: "📜 Payment History", desc: "Track previous payments", path: "/tenant/history" },
-        { title: "📅 Rent Status", desc: "Check current status", path: "/tenant/status" },
+        {
+          title: "💳 Rent Payment",
+          desc: "Pay rent online",
+          path: "/tenant/rent-payment",
+        },
+        {
+          title: "📜 Payment History",
+          desc: "Track previous payments",
+          path: "/tenant/history",
+        },
+        {
+          title: "📅 Rent Status",
+          desc: "Check current status",
+          path: "/tenant/status",
+        },
       ],
     },
     {
       group: "Services",
       items: [
-        { title: "🏠 Property Details", desc: "Your assigned property", path: "/tenant/property" },
-        { title: "📄 Rental Agreement", desc: "Agreement details", path: "/tenant/agreement" },
-        { title: "💡 Utilities", desc: "Electricity/Water bills", path: "/tenant/utilities" },
+        {
+          title: "🏠 Property Details",
+          desc: "Your assigned property",
+          path: "/tenant/property",
+        },
+        {
+          title: "📄 Rental Agreement",
+          desc: "Agreement details",
+          path: "/tenant/agreement",
+        },
+        {
+          title: "💡 Utilities",
+          desc: "Electricity/Water bills",
+          path: "/tenant/utilities",
+        },
       ],
     },
     {
       group: "Support",
       items: [
-        { title: "📢 Complaints", desc: "Raise service issues", path: "/tenant/complaints" },
+        {
+          title: "📢 Complaints",
+          desc: "Raise service issues",
+          path: "/tenant/complaints",
+        },
         { title: "💬 Chat (Coming Soon)", desc: "Chat with owner", path: null },
+      ],
+    },
+    {
+      group: "Legal",
+      items: [
+        {
+          title: "📢 Terms and Condition",
+          desc: "read condition",
+          path: "/tenant/terms-and-conditions",
+        },
+        {
+          title: "📢 Privacy and policy ",
+          desc: "go through privacy and policy ",
+          path: "/tenant/privacy-policy",
+        },
       ],
     },
   ];

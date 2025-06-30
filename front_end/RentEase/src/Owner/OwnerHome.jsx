@@ -97,6 +97,7 @@ const OwnerHome = () => {
           { title: "📜 Bank Details", desc: "update your bank details ." },
           { title: "📅 Rent Status", desc: "View next due date and current status." },
           { title: "💳 Rent collection", desc: "Total rent per month and see payment history." },
+          { title: "📄 View Agreement", desc: "View and manage agreement status." },
           { title: "👤 Terms & Condition", desc: "Update your personal info and details." },
           { title: "?  Privacy and Policy", desc: "your privacy and police  ." },
           { title: "📢 Complaints Status", desc: "solve and track issues with Tenant." },
@@ -115,6 +116,7 @@ const OwnerHome = () => {
                 else if (item.title.includes("Rent Status")) navigate("/owner/rent-status");
                 //  else if (item.title.includes("Rent collection")) navigate("/tenant/profile");
                 else if (item.title.includes("Terms & Condition")) navigate("/owner/terms-and-conditions");
+                else if (item.title.includes(" View Agreement")) navigate("/owner/view-agreement");
                
                 
                 else if (item.title.includes("Privacy and Policy")) navigate("/owner/privacy-policy");

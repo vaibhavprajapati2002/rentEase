@@ -22,7 +22,7 @@ exports.createProperty = async (req, res) => {
     const image = req.file ? req.file.filename : "";
 
     const property = new Property({
-      owner: req.user._id,
+      ownerId: req.user._id,
       name,
       address,
       city,
@@ -50,7 +50,7 @@ exports.createProperty = async (req, res) => {
 // Get all properties for logged-in owner
 exports.getMyProperties = async (req, res) => {
   try {
-    const properties = await Property.find({ owner: req.user._id });
+    const properties = await Property.find({ ownerId: req.user._id });
     res.status(200).json(properties);
   } catch (error) {
     console.error("Error fetching properties:", error);
@@ -63,7 +63,7 @@ exports.updateProperty = async (req, res) => {
   try {
     const property = await Property.findOne({
       _id: req.params.id,
-      owner: req.user._id,
+      ownerId: req.user._id,
     });
 
     if (!property) {
@@ -84,7 +84,7 @@ exports.deleteProperty = async (req, res) => {
   try {
     const deleted = await Property.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user._id,
+      ownerId: req.user._id,
     });
 
     if (!deleted) {

@@ -16,7 +16,7 @@ const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
     size: "",
     availableFrom: "",
     description: "",
-    image: null, // image as file
+    image: null,
   });
 
   useEffect(() => {
@@ -24,7 +24,8 @@ const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
       setFormData((prev) => ({
         ...prev,
         ...initialData,
-        image: null, // don't prefill file input
+        availableFrom: initialData.availableFrom?.slice(0, 10),
+        image: null,
       }));
     }
   }, [initialData]);
@@ -56,14 +57,18 @@ const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
 
     try {
       if (initialData?._id) {
-        await axios.put(`${BASE_URL}/property/updateProperty/${initialData._id}`, form, config);
+        const url = `${BASE_URL}/property/updateProperty/${initialData._id}`;
+        console.log("Updating property at:", url);
+        await axios.put(url, form, config);
+        alert("Property updated successfully.");
       } else {
         await axios.post(`${BASE_URL}/property/createProperty`, form, config);
+        alert("Property created successfully.");
       }
       onSuccess();
     } catch (err) {
-      console.error("Error saving property:", err);
-      alert("Something went wrong.");
+      console.error("Error saving property:", err?.response?.data || err.message);
+      alert("Something went wrong. See console for details.");
     }
   };
 
@@ -75,68 +80,76 @@ const PropertyForm = ({ initialData = null, onClose, onSuccess }) => {
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit} className="row g-3" encType="multipart/form-data">
-          <div className="col-md-6">
-            <label className="form-label">Property Name</label>
-            <input type="text" className="form-control" name="name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Address</label>
-            <input type="text" className="form-control" name="address" value={formData.address} onChange={handleChange} required />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">City</label>
-            <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">State</label>
-            <input type="text" className="form-control" name="state" value={formData.state} onChange={handleChange} required />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">Pincode</label>
-            <input type="text" className="form-control" name="pincode" value={formData.pincode} onChange={handleChange} required />
-          </div>
+          {/* Form Fields */}
+          {[
+            { name: "name", label: "Property Name", col: 6 },
+            { name: "address", label: "Address", col: 6 },
+            { name: "city", label: "City", col: 4 },
+            { name: "state", label: "State", col: 4 },
+            { name: "pincode", label: "Pincode", col: 4 },
+            { name: "bhk", label: "BHK", col: 2, type: "number" },
+            { name: "rent", label: "Rent ₹", col: 3, type: "number" },
+            { name: "deposit", label: "Deposit ₹", col: 3, type: "number" },
+            { name: "size", label: "Size (sqft)", col: 2, type: "number" },
+            { name: "availableFrom", label: "Available From", col: 3, type: "date" },
+          ].map(({ name, label, col, type = "text" }) => (
+            <div className={`col-md-${col}`} key={name}>
+              <label className="form-label">{label}</label>
+              <input
+                type={type}
+                className="form-control"
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          ))}
+
           <div className="col-md-4">
             <label className="form-label">Type</label>
-            <select className="form-select" name="type" value={formData.type} onChange={handleChange} required>
-              <option>Apartment</option>
-              <option>House</option>
-              <option>Flat</option>
-              <option>Villa</option>
-              <option>PG</option>
-              <option>Other</option>
+            <select
+              className="form-select"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              {["Apartment", "House", "Flat", "Villa", "PG", "Other"].map((option) => (
+                <option key={option}>{option}</option>
+              ))}
             </select>
           </div>
-          <div className="col-md-2">
-            <label className="form-label">BHK</label>
-            <input type="number" className="form-control" name="bhk" value={formData.bhk} onChange={handleChange} required />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Rent ₹</label>
-            <input type="number" className="form-control" name="rent" value={formData.rent} onChange={handleChange} required />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Deposit ₹</label>
-            <input type="number" className="form-control" name="deposit" value={formData.deposit} onChange={handleChange} required />
-          </div>
-          <div className="col-md-2">
-            <label className="form-label">Size (sqft)</label>
-            <input type="number" className="form-control" name="size" value={formData.size} onChange={handleChange} required />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Available From</label>
-            <input type="date" className="form-control" name="availableFrom" value={formData.availableFrom?.slice(0, 10)} onChange={handleChange} required />
-          </div>
+
           <div className="col-md-12">
             <label className="form-label">Description</label>
-            <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} rows="2"></textarea>
+            <textarea
+              className="form-control"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="2"
+            />
           </div>
+
           <div className="col-md-6">
             <label className="form-label">Property Image</label>
-            <input type="file" className="form-control" name="image" accept="image/*" onChange={handleChange} />
+            <input
+              type="file"
+              className="form-control"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+            />
           </div>
+
           <div className="col-md-12 d-flex justify-content-end">
-            <button type="submit" className="btn btn-success me-2">{initialData ? "Update" : "Add"}</button>
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn btn-success me-2">
+              {initialData ? "Update" : "Add"}
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </form>
       </div>

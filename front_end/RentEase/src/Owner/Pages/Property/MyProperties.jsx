@@ -23,7 +23,7 @@ const MyProperties = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${BASE_URL}/property/deleteProperty${id}`, {
+      await axios.delete(`${BASE_URL}/property/deleteProperty/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -46,10 +46,14 @@ const MyProperties = () => {
   return (
     <div className="container mt-4">
       <h3>My Properties</h3>
-      <button className="btn btn-primary mb-3" onClick={() => {
-        setEditData(null);
-        setShowForm(true);
-      }}  style={{ marginTop: "10px" }}>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => {
+          setEditData(null);
+          setShowForm(true);
+        }}
+        style={{ marginTop: "10px" }}
+      >
         + Add Property
       </button>
 
@@ -64,18 +68,36 @@ const MyProperties = () => {
         />
       )}
 
-      <div className="row" style={{marginTop: "80px" }} >
+      <div className="row" style={{ marginTop: "80px" }}>
         {properties.map((property) => (
           <div className="col-md-4 mb-3" key={property._id}>
             <div className="card">
-              <img src={`${BASE_URL}/uploads/${property.image}`} alt="..." className="card-img-top" />
+              <img
+                src={`${BASE_URL}/uploads/${property.image}`}
+                alt="..."
+                className="card-img-top"
+              />
               <div className="card-body">
                 <h5 className="card-title">{property.name}</h5>
-                <p>{property.city}, {property.state}</p>
-                <p><strong>Rent:</strong> ₹{property.rent}</p>
+                <p>
+                  {property.city}, {property.state}
+                </p>
+                <p>
+                  <strong>Rent:</strong> ₹{property.rent}
+                </p>
                 <div style={{ display: "flex", justifyContent: "right" }}>
-                  <button className="btn btn-sm btn-info me-2" onClick={() => handleEdit(property)} >Edit</button>
-                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(property._id)}>Delete</button>
+                  <button
+                    className="btn btn-sm btn-info me-2"
+                    onClick={() => handleEdit(property)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(property._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>

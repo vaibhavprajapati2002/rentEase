@@ -18,6 +18,8 @@ import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
 import ViewProperty from './tenant/pages/ViewProperty.jsx';
 import TenantProfile from './Tenant/pages/TenantProfile.jsx';
 import RentPayment from './Tenant/pages/RentPayment.jsx';
+import TenantTermsAndCondition from './Tenant/pages/TenantTermsAndCondition.jsx';
+import TenantPrivacyPolicy from './Tenant/pages/TenantPrivacyAndPolicy.jsx';
 
 
 
@@ -31,12 +33,14 @@ import BankDetails from './Owner/Pages/BankDetails/BankDetails.jsx';
 import RentStatus from './Owner/Pages/RentStatus/RentStatus.jsx';
 import TermsAndCondition from './Owner/Pages/TermsAndCondition/TermsAndCondition.jsx';
 import PrivacyAndPolicy from './Owner/Pages/PrivacyAndPolicy/PrivacyAndPoicy.jsx';
+import RentAgreement from './Owner/Pages/Agreement/OwnerRentAgreement.jsx'; // Assuming this is the correct path
 
 
 
 
 import OwnerInfo from './Tenant/pages/OwnerInfo.jsx';
 import Footer from './MyComponent/Footer.jsx';
+import Property from './Property.jsx';
 function App() {
 
 
@@ -56,6 +60,7 @@ function App() {
         <Route path="/role" element={<Role />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:email" element={<ResetPassword />} />
+        <Route path="/PropertyDetails" element={<Property />} />
         
         
 
@@ -70,6 +75,7 @@ function App() {
         <Route path="/owner/rent-status" element={<RentStatus />} />
         <Route path="/owner/terms-and-conditions" element={<TermsAndCondition />} />
         <Route path="/owner/privacy-policy" element={<PrivacyAndPolicy />} />
+        <Route path="/owner/view-agreement" element={<RentAgreement />} />
 
          
 
@@ -86,6 +92,8 @@ function App() {
         <Route path="/tenant/owner-info" element={<OwnerInfo />} />
         <Route path="/tenant/profile" element={<TenantProfile />} />
         <Route path="/tenant/rent-payment" element={<RentPayment />} />
+        <Route path="/tenant/terms-and-conditions" element={<TenantTermsAndCondition />} />
+        <Route path="/tenant/privacy-policy" element={<TenantPrivacyPolicy />} />
 
 
         {/* Add more routes as needed */}

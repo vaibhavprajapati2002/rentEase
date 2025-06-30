@@ -6,7 +6,7 @@ exports.getOwnerTenants = async (req, res) => {
     const ownerId = req.user.id;
 
     // Find all properties owned by the current owner
-    const properties = await Property.find({ owner: ownerId }).select("_id");
+    const properties = await Property.find({ ownerId: ownerId }).select("_id");
 
     const propertyIds = properties.map((p) => p._id);
 
