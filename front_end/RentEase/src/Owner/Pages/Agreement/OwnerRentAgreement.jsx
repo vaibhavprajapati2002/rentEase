@@ -33,12 +33,12 @@ const OwnerRentAgreement = () => {
   return (
     <div className="container mt-4">
       <h3>My Property Agreements</h3>
-       <button
+       {/* <button
         className="btn btn-outline-primary mt-3"
         onClick={() => navigate("/owner/agreement-requests")}
       >
         📄 View Agreement Requests
-      </button>
+      </button> */}
       <div className="row mt-3">
         {properties.map((prop) => (
           <div className="col-md-6 mb-3" key={prop._id}>

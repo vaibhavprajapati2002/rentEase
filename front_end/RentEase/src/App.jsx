@@ -34,8 +34,11 @@ import BankDetails from './Owner/Pages/BankDetails/BankDetails.jsx';
 import RentStatus from './Owner/Pages/RentStatus/RentStatus.jsx';
 import TermsAndCondition from './Owner/Pages/TermsAndCondition/TermsAndCondition.jsx';
 import PrivacyAndPolicy from './Owner/Pages/PrivacyAndPolicy/PrivacyAndPoicy.jsx';
+import AgreementPanel from './Owner/Pages/Agreement/AgreementPanel.jsx';
 import RentAgreement from './Owner/Pages/Agreement/OwnerRentAgreement.jsx'; // Assuming this is the correct path
 import AgreementRequests from './Owner/Pages/Agreement/AgreementRequest.jsx';
+import AgreementApproved from './Owner/Pages/Agreement/AgreementApproved.jsx';
+import AgreementAll from './Owner/Pages/Agreement/AgreementAll.jsx';
 
 
 
@@ -77,8 +80,11 @@ function App() {
         <Route path="/owner/rent-status" element={<RentStatus />} />
         <Route path="/owner/terms-and-conditions" element={<TermsAndCondition />} />
         <Route path="/owner/privacy-policy" element={<PrivacyAndPolicy />} />
-        <Route path="/owner/view-agreement" element={<RentAgreement />} />
-        <Route path="/owner/agreement-requests" element={<AgreementRequests />} />
+        <Route path="/owner/agreement-panel" element={<AgreementPanel />} />
+        <Route path="/owner/create-agreement" element={<RentAgreement />} />
+        <Route path="/owner/agreement/requests" element={<AgreementRequests />} />
+        <Route path="/owner/agreement/approved" element={<AgreementApproved />} />
+        <Route path="/owner/agreement/all" element={<AgreementAll />} />
 
          
 

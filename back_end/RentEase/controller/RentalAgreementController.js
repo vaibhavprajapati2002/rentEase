@@ -181,3 +181,41 @@ exports.respondToRequest = async (req, res) => {
   }
 };
 
+// controllers/RentalAgreementController.js
+
+
+
+exports.getApprovedAgreements = async (req, res) => {
+  try {
+    const ownerId = req.user._id;
+
+    const agreements = await RentalAgreement.find({
+      owner: ownerId,
+      status: "approved",
+    })
+      .populate("property", "name city")
+      .populate("tenant", "name email phone");
+
+    res.json(agreements);
+  } catch (err) {
+    console.error("Error fetching approved agreements:", err);
+    res.status(500).json({ message: "Server error while fetching approved agreements" });
+  }
+};
+
+
+
+exports.getAllAgreements = async (req, res) => {
+  try {
+    const ownerId = req.user._id;
+
+    const agreements = await RentalAgreement.find({ owner: ownerId })
+      .populate("property", "name city")
+      .populate("tenant", "name email");
+
+    res.json(agreements);
+  } catch (err) {
+    console.error("Error fetching all agreements:", err);
+    res.status(500).json({ message: "Server error while fetching agreements" });
+  }
+};

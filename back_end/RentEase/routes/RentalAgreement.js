@@ -23,4 +23,8 @@ router.get("/requests", auth, rentalAgreementController.getTenantRequestsForOwne
 // PUT respond to a request (approve/reject)
 router.put("/respond/:id", auth, rentalAgreementController.respondToRequest);
 
+router.get("/approved", auth, rentalAgreementController.getApprovedAgreements);
+
+router.get("/all/agreements", auth, rentalAgreementController.getAllAgreements);
+
 module.exports = router;
