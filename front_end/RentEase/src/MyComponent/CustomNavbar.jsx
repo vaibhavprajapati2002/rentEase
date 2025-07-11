@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -8,8 +8,8 @@ const CustomNavbar = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role"); // "owner", "tenant" or null
   const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false); // for collapsing menu on mobile
 
-  // 🔁 Redirect to dashboard if token exists and already on "/"
   useEffect(() => {
     if (token && role && window.location.pathname === "/") {
       navigate(`/${role}/dashboard`);
@@ -22,72 +22,76 @@ const CustomNavbar = () => {
   };
 
   return (
-    <Navbar bg="light" sticky="top" expand="lg" className="shadow-sm" style={{ height: "80px" }}>
-      <Container>
-        {/* Brand Logo */}
+    <Navbar
+      bg="light"
+      expand="lg"
+      expanded={expanded}
+      className="shadow-sm px-2"
+      sticky="top"
+      style={{ minHeight: "70px" }}
+    >
+      <Container fluid="lg" className="d-flex justify-content-between align-items-center">
+        {/* Logo */}
         <Navbar.Brand as={Link} to={token ? `/${role}/dashboard` : "/"}>
           <img
             src={Logo}
             alt="RentEase"
-            style={{ height: "60px", width: "140px", objectFit: "contain" }}
+            style={{ height: "50px", width: "130px", objectFit: "contain" }}
           />
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="ms-auto align-items-center gap-3">
+        {/* Toggle Button */}
+        <Navbar.Toggle
+          aria-controls="navbar-nav"
+          onClick={() => setExpanded(!expanded)}
+        />
 
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto align-items-center gap-3 text-center">
             {token ? (
               <>
-                {/* Dashboard */}
-                <Nav.Link as={NavLink} to={`/${role}/dashboard`}>
+                <Nav.Link as={NavLink} to={`/${role}/dashboard`} onClick={() => setExpanded(false)}>
                   <i className="bi bi-speedometer2"></i> Dashboard
                 </Nav.Link>
 
-                {/* Property (owner or tenant specific) */}
                 {role === "owner" && (
-                  <Nav.Link as={NavLink} to="/owner/my-properties">
-                    <i className="bi bi-house-door"></i> Property
-                  </Nav.Link>
+                  <>
+                    <Nav.Link as={NavLink} to="/owner/my-properties" onClick={() => setExpanded(false)}>
+                      <i className="bi bi-house-door"></i> Property
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to="/owner/view-tenant" onClick={() => setExpanded(false)}>
+                      <i className="bi bi-people-fill"></i> Tenants
+                    </Nav.Link>
+                  </>
                 )}
+
                 {role === "tenant" && (
-                  <Nav.Link as={NavLink} to="/tenant/property">
-                    <i className="bi bi-house-door"></i> Property
-                  </Nav.Link>
+                  <>
+                    <Nav.Link as={NavLink} to="/tenant/property" onClick={() => setExpanded(false)}>
+                      <i className="bi bi-house-door"></i> Property
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to="/tenant/owner-info" onClick={() => setExpanded(false)}>
+                      <i className="bi bi-person-check"></i> Owner
+                    </Nav.Link>
+                  </>
                 )}
 
-                {/* Owner-specific */}
-                {role === "owner" && (
-                  <Nav.Link as={NavLink} to="/owner/view-tenant">
-                    <i className="bi bi-people-fill"></i> Tenants
-                  </Nav.Link>
-                )}
-
-                {/* Tenant-specific */}
-                {role === "tenant" && (
-                  <Nav.Link as={NavLink} to="/tenant/owner-info">
-                    <i className="bi bi-person-check"></i> Owner
-                  </Nav.Link>
-                )}
-
-                {/* Logout */}
-                <Nav.Link onClick={handleLogout}>
+                <Nav.Link onClick={() => { setExpanded(false); handleLogout(); }}>
                   <i className="bi bi-box-arrow-right"></i> Logout
                 </Nav.Link>
               </>
             ) : (
               <>
-                {/* Public routes */}
-                <Nav.Link as={NavLink} to="/">
+                <Nav.Link as={NavLink} to="/" onClick={() => setExpanded(false)}>
                   <i className="bi bi-house"></i> Home
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/feature">
+                <Nav.Link as={NavLink} to="/feature" onClick={() => setExpanded(false)}>
                   <i className="bi bi-stars"></i> Feature
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/PropertyDetails">
+                <Nav.Link as={NavLink} to="/PropertyDetails" onClick={() => setExpanded(false)}>
                   <i className="bi bi-house-door"></i> Property
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/login">
+                <Nav.Link as={NavLink} to="/login" onClick={() => setExpanded(false)}>
                   <i className="bi bi-person-plus"></i> Login
                 </Nav.Link>
               </>
