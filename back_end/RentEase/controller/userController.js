@@ -5,16 +5,18 @@ const axios = require('axios');
 
 // 📩 Send OTP via SMS using 2Factor
 exports.sendOtp = async (req, res) => {
-  const { phone } = req.body;
+  const { phone, method } = req.body;
 
   if (!phone) return res.status(400).json({ error: "Phone number is required" });
 
   try {
     const apiKey = process.env.TWOFACTOR_API_KEY;
 
-    // 🔐 Use your approved template & sender ID (RENTEZ)
+    // Decide method: SMS or VOICE
+    const otpMethod = method === "call" ? "VOICE" : "SMS";
+
     const response = await axios.get(
-      `https://2factor.in/API/V1/${apiKey}/SMS/${phone}/AUTOGEN/RENTEZ`
+      `https://2factor.in/API/V1/${apiKey}/${otpMethod}/${phone}/AUTOGEN`
     );
 
     if (response.data.Status !== "Success") {
@@ -35,7 +37,7 @@ exports.sendOtp = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      message: "OTP sent successfully via SMS",
+      message: `OTP sent successfully via ${method === "call" ? "Call" : "SMS"}`,
       sessionId,
       phone
     });
