@@ -10,6 +10,8 @@ import {
 import logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const BASE_URL = import.meta.env.VITE_API_URL;
@@ -31,13 +33,16 @@ const Register = () => {
 
     try {
       const response = await axios.post(`${BASE_URL}/send-otp`, { phone });
-
       const sessionId = response.data.sessionId;
 
       navigate('/verify-otp', { state: { phone } });
     } catch (error) {
       console.error("Error sending OTP:", error);
-      window.alert("Failed to send OTP");
+      toast.error("Failed to send OTP", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored"
+      });
     }
   };
 
@@ -77,6 +82,16 @@ const Register = () => {
           </Typography>
         </Box>
       </Paper>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </Container>
   );
 };

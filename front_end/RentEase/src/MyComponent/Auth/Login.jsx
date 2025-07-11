@@ -13,6 +13,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const BASE_URL = import.meta.env.VITE_API_URL;
@@ -39,33 +41,34 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log("Submitting form...");
-    // console.log("Form data submitted:", formData);
-
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
         email: formData.email,
         password: formData.password,
       });
 
-      // console.log("Login successful:", response.data);
+      const { token, role, _id } = response.data;
 
-      const { token, role , _id } = response.data;
-
-      // Store the token (if returned)
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", _id);
 
-
-      if (role ==="tenant") {
+      if (role === "tenant") {
         navigate("/tenant/dashboard");
       } else if (role === "owner") {
         navigate("/owner/dashboard");
-      } 
+      }
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);
-      alert(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
     }
   };
 
@@ -113,6 +116,7 @@ const Login = () => {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
             Login
           </Button>
+
           <Box display="flex" justifyContent="space-between" mt={2}>
             <Typography variant="body2">
               <Link to="/forgot-password" style={{ color: "black" }}>
@@ -127,9 +131,11 @@ const Login = () => {
               </Link>
             </Typography>
           </Box>
-
         </Box>
       </Paper>
+
+      {/* Toast container */}
+      <ToastContainer />
     </Container>
   );
 };

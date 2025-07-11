@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ViewTenant = () => {
   const [allTenants, setAllTenants] = useState([]);
@@ -94,17 +96,24 @@ const ViewTenant = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Update UI
       setAllTenants((prev) =>
         prev.map((t) =>
           t._id === tenantId ? { ...t, property: null } : t
         )
       );
 
-      alert("Tenant unassigned successfully.");
+      toast.success("Tenant unassigned successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
     } catch (err) {
       console.error("Error unassigning tenant", err);
-      alert("Something went wrong.");
+      toast.error("Something went wrong", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
     }
   };
 
@@ -202,6 +211,16 @@ const ViewTenant = () => {
           )}
         </>
       )}
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </Box>
   );
 };
