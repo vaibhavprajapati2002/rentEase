@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './MyComponent/Auth/Login.jsx';
 import Register from './MyComponent/Auth/Register.jsx';
-import VerifyOtp from './MyComponent/Auth/VerifyOtp.jsx';
+import VerifyOtp from './MyComponent/Auth/Verifyotp.jsx';
 import UserDetails from './MyComponent/Auth/UserDetails.jsx';
 import Role from './MyComponent/Auth/Role.jsx';
 import ForgotPassword from './MyComponent/Auth/ForgotPassword.jsx';
