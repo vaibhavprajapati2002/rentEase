@@ -17,15 +17,11 @@ const Register = () => {
   const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
 
-  const validatePhone = (number) => {
-    const phoneRegex = /^[6-9]\d{9}$/; // Starts with 6-9, 10 digits total
-    return phoneRegex.test(number);
-  };
+  const validatePhone = (number) => /^[6-9]\d{9}$/.test(number);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate phone number before submitting
     if (!validatePhone(phone)) {
       setPhoneError("Please enter a valid 10-digit phone number starting with 6-9.");
       return;
@@ -34,15 +30,14 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(`${BASE_URL}/send-otp`, {
-        phone: phone
-      });
-      // console.log(response.data);
-      const otp = response.data.otp;
-      // console.log("OTP:", otp);
-      navigate('/verify-otp', { state: { phone, otp } });
+      const response = await axios.post(`${BASE_URL}/send-otp`, { phone });
+
+      const sessionId = response.data.sessionId;
+
+      navigate('/verify-otp', { state: { phone } });
     } catch (error) {
       console.error("Error sending OTP:", error);
+      window.alert("Failed to send OTP");
     }
   };
 
@@ -53,7 +48,7 @@ const Register = () => {
           Register to continue
         </Typography>
         <Typography variant="h4" gutterBottom align="center">
-          <img src={logo} alt="Logo" style={{ height:"80px",width:"120px" }} />
+          <img src={logo} alt="Logo" style={{ height: "80px", width: "120px" }} />
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} noValidate>

@@ -8,36 +8,30 @@ import {
   Paper
 } from "@mui/material";
 import logo from "../../assets/images/logo.png";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const Verifyotp = () => {
   const BASE_URL = import.meta.env.VITE_API_URL;
   const location = useLocation();
   const navigate = useNavigate();
-  // Destructure phone and otp from navigation state exactly as sent
-  const { phone: initialPhone, otp: initialOtp } = location.state || {};
 
-  const [otp, setOtp] = useState(initialOtp || "");
-  // phone is not editable, so no state for it needed
+  const { phone, sessionId } = location.state || {};
+  const [otp, setOtp] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${BASE_URL}/verify-otp`, {
-        phone: initialPhone,
-        otp: otp
+        phone,
+        otp,
+        sessionId
       });
-      console.log(response.data);
+
       window.alert("OTP verified successfully");
-
-
-      navigate("/role", {
-        state: { phone: initialPhone } // Pass phone to next page
-      });
+      navigate("/role", { state: { phone } });
     } catch (error) {
-      console.error("Error verifying OTP:", error);
+      console.error("Error verifying OTP:", error?.response?.data || error);
       window.alert("OTP verification failed");
     }
   };
@@ -49,7 +43,7 @@ const Verifyotp = () => {
           Verify OTP
         </Typography>
         <Typography variant="h4" gutterBottom align="center">
-          <img src={logo} alt="Logo" style={{ height:"80px",width:"120px" }} />
+          <img src={logo} alt="Logo" style={{ height: "80px", width: "120px" }} />
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} noValidate>
@@ -57,9 +51,9 @@ const Verifyotp = () => {
             fullWidth
             margin="normal"
             label="Phone Number"
-            value={initialPhone || ""}
+            value={phone || ""}
             type="text"
-            disabled // phone not editable
+            disabled
           />
           <TextField
             fullWidth
