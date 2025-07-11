@@ -3,23 +3,28 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
 
-// 📲 Send OTP using 2Factor API
+// 📩 Send OTP via SMS using 2Factor
 exports.sendOtp = async (req, res) => {
   const { phone } = req.body;
+
   if (!phone) return res.status(400).json({ error: "Phone number is required" });
 
   try {
-    // ✅ Call 2Factor SMS API to send OTP
     const apiKey = process.env.TWOFACTOR_API_KEY;
-    const response = await axios.get(`https://2factor.in/API/V1/${apiKey}/SMS/${phone}/AUTOGEN`);
+
+    // 🔐 Use your approved template & sender ID (RENTEZ)
+    const response = await axios.get(
+      `https://2factor.in/API/V1/${apiKey}/SMS/${phone}/AUTOGEN/RENTEZ`
+    );
 
     if (response.data.Status !== "Success") {
-      return res.status(500).json({ error: "Failed to send OTP" });
+      console.error("2Factor send OTP failed:", response.data);
+      return res.status(500).json({ error: "Failed to send OTP. Try again later." });
     }
 
     const sessionId = response.data.Details;
 
-    // ✅ Save sessionId to DB
+    // 🔄 Save or update user with OTP sessionId
     let user = await User.findOne({ phone });
     if (user) {
       user.otpSessionId = sessionId;
@@ -29,7 +34,11 @@ exports.sendOtp = async (req, res) => {
 
     await user.save();
 
-    res.json({ message: "OTP sent successfully", sessionId, phone });
+    res.status(200).json({
+      message: "OTP sent successfully via SMS",
+      sessionId,
+      phone
+    });
 
   } catch (err) {
     console.error("sendOtp error:", err?.response?.data || err.message);
@@ -37,9 +46,10 @@ exports.sendOtp = async (req, res) => {
   }
 };
 
-// 📲 Verify OTP using 2Factor API
+// ✅ Verify OTP using 2Factor
 exports.verifyOtp = async (req, res) => {
   const { phone, otp } = req.body;
+
   if (!phone || !otp) return res.status(400).json({ error: "Phone and OTP are required" });
 
   try {
@@ -60,13 +70,14 @@ exports.verifyOtp = async (req, res) => {
     user.otpSessionId = null;
     await user.save();
 
-    res.json({ message: "OTP verified successfully", next: "/register-info" });
+    res.status(200).json({ message: "OTP verified successfully", next: "/register-info" });
 
   } catch (err) {
     console.error("verifyOtp error:", err?.response?.data || err.message);
     res.status(500).json({ error: "OTP verification failed" });
   }
 };
+
 
 // 🧑‍💼 Define Role
 exports.defineRole = async (req, res) => {
