@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 
 /**
- * Tenant dashboard. Fetches the logged‑in tenant, checks they have a property,
- * and renders a card‑based menu of actions.
+ * Tenant Dashboard Page
+ * - Fetches tenant data securely
+ * - Validates property assignment
+ * - Displays grouped dashboard actions with modern interactive UI
  */
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 
 const TenantHome = () => {
@@ -15,9 +19,7 @@ const TenantHome = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* -------------------------------------------------------------------------- */
-  /*                               Data fetching                                */
-  /* -------------------------------------------------------------------------- */
+  // Fetch tenant data on component mount
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -45,9 +47,7 @@ const TenantHome = () => {
     fetchUser();
   }, [navigate]);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   Styles                                   */
-  /* -------------------------------------------------------------------------- */
+  // ---------------------- Styles ---------------------- //
   const styles = {
     container: {
       padding: "20px",
@@ -58,119 +58,85 @@ const TenantHome = () => {
     header: {
       fontSize: "1.8rem",
       fontWeight: "bold",
-      marginBottom: "10px",
+      marginBottom: "6px",
       color: "#333",
     },
     subHeader: {
-      color: "#777",
+      color: "#555",
       marginBottom: "20px",
-      fontSize: "1rem",
+      fontSize: "0.95rem",
+    },
+    sectionTitle: {
+      fontSize: "1.1rem",
+      fontWeight: "600",
+      marginBottom: "10px",
+      color: "#444",
     },
     grid: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
       gap: "20px",
-      marginTop: "20px",
+      marginTop: "12px",
     },
-    card: {
+    card: (active) => ({
       backgroundColor: "#fff",
       borderRadius: "12px",
       padding: "16px",
       boxShadow: "0 6px 15px rgba(0,0,0,0.06)",
+      cursor: "pointer",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-      transition: "transform 0.2s ease-in-out",
-    },
+      borderLeft: `5px solid ${active ? "#007bff" : "#999"}`,
+      transition: "0.2s ease",
+    }),
     cardTitle: {
       fontSize: "1.2rem",
       fontWeight: "600",
       marginBottom: "6px",
+      color: "#222",
     },
     cardDesc: {
-      fontSize: "0.9rem",
+      fontSize: "0.95rem",
       color: "#555",
-      marginBottom: "10px",
     },
-    button: {
-      alignSelf: "flex-start",
-      padding: "8px 14px",
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      borderRadius: "6px",
-      fontSize: "0.85rem",
-      cursor: "pointer",
+    comingSoon: {
+      marginTop: "8px",
+      color: "#e74c3c",
+      fontSize: "0.8rem",
+      fontWeight: 500,
     },
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                  Content                                   */
-  /* -------------------------------------------------------------------------- */
+  // ---------------------- Dashboard Sections ---------------------- //
   const cardData = [
     {
       group: "Profile",
       items: [
-        {
-          title: "👤 Your Profile",
-          desc: "Update your info",
-          path: "/tenant/profile",
-        },
-        {
-          title: "📞 Owner Info",
-          desc: "View and contact owner",
-          path: "/tenant/owner-info",
-        },
+        { title: "👤 Your Profile", desc: "Update your info", path: "/tenant/profile" },
+        { title: "📞 Owner Info", desc: "View and contact owner", path: "/tenant/owner-info" },
       ],
     },
     {
       group: "Payments",
       items: [
-        {
-          title: "💳 Rent Payment",
-          desc: "Pay rent online",
-          path: "/tenant/rent-payment",
-        },
-        {
-          title: "📜 Payment History",
-          desc: "Track previous payments",
-          path: "/tenant/history",
-        },
-        {
-          title: "📅 Rent Status",
-          desc: "Check current status",
-          path: "/tenant/status",
-        },
+        { title: "💳 Rent Payment", desc: "Pay rent online", path: "/tenant/rent-payment" },
+        { title: "📜 Payment History", desc: "Track previous payments", path: "/tenant/history" },
+        { title: "📅 Rent Status", desc: "Check current status", path: "/tenant/status" },
       ],
     },
     {
       group: "Services",
       items: [
-        {
-          title: "🏠 Property Details",
-          desc: "Your assigned property",
-          path: "/tenant/property",
-        },
-        {
-          title: "📄 Rental Agreement",
-          desc: "Agreement details",
-          path: "/tenant/agreement",
-        },
-        {
-          title: "💡 Utilities",
-          desc: "Electricity/Water bills",
-          path: "/tenant/utilities",
-        },
+        { title: "🏠 Property Details", desc: "Your assigned property", path: "/tenant/property" },
+        { title: "📄 Rental Agreement", desc: "Agreement details", path: "/tenant/agreement" },
+        { title: "💡 Utilities", desc: "Electricity/Water bills", path: "/tenant/utilities" },
       ],
     },
     {
       group: "Support",
       items: [
-        {
-          title: "📢 Complaints",
-          desc: "Raise service issues",
-          path: "/tenant/complaints",
-        },
+        { title: "📢 Complaints", desc: "Raise service issues", path: "/tenant/complaints" },
         { title: "💬 Chat (Coming Soon)", desc: "Chat with owner", path: null },
       ],
     },
@@ -179,21 +145,19 @@ const TenantHome = () => {
       items: [
         {
           title: "📢 Terms and Condition",
-          desc: "read condition",
+          desc: "Read terms and conditions",
           path: "/tenant/terms-and-conditions",
         },
         {
-          title: "📢 Privacy and policy ",
-          desc: "go through privacy and policy ",
+          title: "🔒 Privacy Policy",
+          desc: "Go through privacy and policy",
           path: "/tenant/privacy-policy",
         },
       ],
     },
   ];
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   Render                                   */
-  /* -------------------------------------------------------------------------- */
+  // ---------------------- Loading View ---------------------- //
   if (loading) {
     return (
       <div style={{ padding: "2rem", textAlign: "center", fontSize: "1.2rem" }}>
@@ -203,6 +167,7 @@ const TenantHome = () => {
     );
   }
 
+  // ---------------------- Render ---------------------- //
   return (
     <div style={styles.container}>
       <div style={styles.header}>Welcome, {user?.name || "Tenant"} 👋</div>
@@ -212,32 +177,24 @@ const TenantHome = () => {
 
       {cardData.map((section) => (
         <div key={section.group} style={{ marginBottom: "30px" }}>
-          <div
-            style={{
-              fontSize: "1.1rem",
-              fontWeight: "600",
-              marginBottom: "10px",
-              color: "#444",
-            }}
-          >
-            {section.group}
-          </div>
+          <div style={styles.sectionTitle}>{section.group}</div>
           <div style={styles.grid}>
             {section.items.map((item) => (
-              <div key={item.title} style={styles.card}>
+              <motion.div
+                key={item.title}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                style={styles.card(!!item.path)}
+                onClick={() =>
+                  item.path
+                    ? navigate(item.path)
+                    : toast.info("🚧 This feature is coming soon!")
+                }
+              >
                 <div style={styles.cardTitle}>{item.title}</div>
                 <div style={styles.cardDesc}>{item.desc}</div>
-                <button
-                  style={styles.button}
-                  onClick={() =>
-                    item.path
-                      ? navigate(item.path)
-                      : toast.info("This feature is coming soon!")
-                  }
-                >
-                  View
-                </button>
-              </div>
+                {!item.path && <div style={styles.comingSoon}>🚧 Coming soon</div>}
+              </motion.div>
             ))}
           </div>
         </div>
