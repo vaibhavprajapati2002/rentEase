@@ -15,7 +15,7 @@ import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
 import PropertyDetails from './Tenant/pages/PropertyDetails.jsx';
-import ViewProperty from './Tenant/pages/ViewProperty.jsx';
+import ViewProperty from './Tenant/components/ViewProperty.jsx';
 import TenantProfile from './Tenant/pages/TenantProfile.jsx';
 import RentPayment from './Tenant/pages/RentPayment.jsx';
 import TenantTermsAndCondition from './Tenant/pages/TenantTermsAndCondition.jsx';
