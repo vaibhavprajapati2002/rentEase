@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Button, TextField, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  CircularProgress,
+  Paper,
+  Alert,
+  useMediaQuery,
+} from "@mui/material";
 
 const PrivacyAndPolicy = () => {
   const [policy, setPolicy] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", text: "" });
+
+  const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const fetchPolicy = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/owner/privacy/get-privacy", {
+      const res = await axios.get(`${BASE_URL}/owner/privacy/get-privacy`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      setPolicy(response.data.privacyAndPolicy || "");
-    } catch (error) {
-      console.error("Failed to fetch privacy policy:", error);
+      setPolicy(res.data.privacyAndPolicy || "");
+    } catch (err) {
+      console.error("Failed to fetch policy:", err);
+      setMessage({ type: "error", text: "Error loading privacy policy." });
     }
     setLoading(false);
   };
@@ -27,20 +40,20 @@ const PrivacyAndPolicy = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/owner/privacy/update-privacy",
+      await axios.post(
+        `${BASE_URL}/owner/privacy/update-privacy`,
         { privacyAndPolicy: policy },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-      setMessage("Privacy policy updated successfully!");
+      setMessage({ type: "success", text: "Privacy policy updated successfully!" });
       setEditMode(false);
-    } catch (error) {
-      console.error("Failed to update privacy policy:", error);
-      setMessage("Failed to update privacy policy.");
+    } catch (err) {
+      console.error("Update failed:", err);
+      setMessage({ type: "error", text: "Failed to update privacy policy." });
     }
     setSaving(false);
   };
@@ -50,57 +63,72 @@ const PrivacyAndPolicy = () => {
   }, []);
 
   return (
-    <Box p={4}>
-      <Typography variant="h5" gutterBottom>
-        Privacy and Policy
-      </Typography>
+    <Box
+      bgcolor="#f9fafb"
+      minHeight="100vh"
+      px={isMobile ? 2 : 4}
+      py={4}
+      display="flex"
+      justifyContent="center"
+    >
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 3, maxWidth: "900px", width: "100%" }}>
+        <Typography variant="h4" gutterBottom align="center">
+          Privacy & Policy
+        </Typography>
 
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <>
-          {editMode ? (
-            <>
-              <TextField
-                fullWidth
-                multiline
-                minRows={6}
-                value={policy}
-                onChange={(e) => setPolicy(e.target.value)}
-                variant="outlined"
-              />
-              <Box mt={2}>
-                <Button variant="contained" onClick={handleSave} disabled={saving}>
-                  {saving ? "Saving..." : "Save"}
-                </Button>
-                <Button variant="outlined" onClick={() => setEditMode(false)} sx={{ ml: 2 }}>
-                  Cancel
-                </Button>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Typography
-                variant="body1"
-                style={{ whiteSpace: "pre-line", background: "#f9f9f9", padding: "1rem", borderRadius: "8px" }}
-              >
-                {policy || "No privacy policy set."}
-              </Typography>
-              <Box mt={2}>
-                <Button variant="contained" onClick={() => setEditMode(true)}>
-                  Edit Policy
-                </Button>
-              </Box>
-            </>
-          )}
+        {loading ? (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {editMode ? (
+              <>
+                <TextField
+                  fullWidth
+                  multiline
+                  minRows={8}
+                  value={policy}
+                  onChange={(e) => setPolicy(e.target.value)}
+                  variant="outlined"
+                  label="Edit Privacy Policy"
+                />
+                <Box display="flex" justifyContent="flex-end" mt={3} gap={2}>
+                  <Button variant="outlined" onClick={() => setEditMode(false)} disabled={saving}>
+                    Cancel
+                  </Button>
+                  <Button variant="contained" onClick={handleSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save"}
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <>
+                <Box
+                  bgcolor="#f1f5f9"
+                  p={2}
+                  borderRadius={2}
+                  sx={{ whiteSpace: "pre-line", fontSize: "0.95rem", color: "#333" }}
+                >
+                  {policy || "No privacy policy set."}
+                </Box>
 
-          {message && (
-            <Typography mt={2} color="primary">
-              {message}
-            </Typography>
-          )}
-        </>
-      )}
+                <Box display="flex" justifyContent="flex-end" mt={3}>
+                  <Button variant="contained" onClick={() => setEditMode(true)}>
+                    Edit Policy
+                  </Button>
+                </Box>
+              </>
+            )}
+
+            {message.text && (
+              <Alert severity={message.type} sx={{ mt: 3 }}>
+                {message.text}
+              </Alert>
+            )}
+          </>
+        )}
+      </Paper>
     </Box>
   );
 };
