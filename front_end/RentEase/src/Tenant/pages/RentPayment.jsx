@@ -1,7 +1,14 @@
-// RentPayment.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Typography, CircularProgress, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  CircularProgress,
+  Paper,
+  useMediaQuery,
+  Divider,
+} from "@mui/material";
 import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -12,6 +19,7 @@ const RentPayment = () => {
   const [property, setProperty] = useState(null);
   const [rentAmount, setRentAmount] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const token = localStorage.getItem("token");
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -20,15 +28,15 @@ const RentPayment = () => {
     const fetchTenantData = async () => {
       try {
         const res = await axios.get(`${API_URL}/tenant/tenant-info`, authHeader);
-        console.log("Tenant data:", res.data);
         setTenant(res.data.tenant);
         setOwner(res.data.owner);
         setProperty(res.data.property);
-        setRentAmount(res.data.property.rent);
-        setLoading(false);
+        setRentAmount(res.data.property?.rent || 0);
       } catch (err) {
         console.error("Failed to fetch rent data:", err);
         toast.error("Failed to load rent info");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -67,10 +75,9 @@ const RentPayment = () => {
               },
               authHeader
             );
-
             toast.success("Payment successful!");
           } catch (err) {
-            toast.error("Payment successful but failed to save record.");
+            toast.error("Payment succeeded but saving failed.");
             console.error("Save error:", err);
           }
         },
@@ -87,24 +94,67 @@ const RentPayment = () => {
       rzp.open();
     } catch (error) {
       console.error("Payment init error:", error);
-      toast.error("Payment failed to start.");
+      toast.error("Payment failed to initiate.");
     }
   };
 
-  if (loading || !tenant || !owner || !property) return <CircularProgress />;
+  if (loading || !tenant || !owner || !property) {
+    return (
+      <Box mt={6} textAlign="center">
+        <CircularProgress />
+        <Typography mt={2}>Loading rent details...</Typography>
+      </Box>
+    );
+  }
 
   return (
-    <Paper sx={{ p: 3, m: 2 }}>
-      <Typography variant="h5" gutterBottom>
-        Pay Your Rent
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Rent Amount Due: ₹{rentAmount}
-      </Typography>
-      <Button variant="contained" color="primary" onClick={handlePayment}>
-        Pay Now
-      </Button>
-    </Paper>
+    <Box
+      px={isMobile ? 2 : 4}
+      py={4}
+      maxWidth="700px"
+      mx="auto"
+      minHeight="100vh"
+      bgcolor="#f9fafb"
+    >
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+        <Typography variant="h5" gutterBottom align="center">
+          💰 Rent Payment
+        </Typography>
+        <Divider sx={{ my: 2 }} />
+
+        <Box mb={2}>
+          <Typography variant="subtitle1">Tenant Name:</Typography>
+          <Typography variant="body1">{tenant.name}</Typography>
+        </Box>
+
+        <Box mb={2}>
+          <Typography variant="subtitle1">Property:</Typography>
+          <Typography variant="body1">{property.name}</Typography>
+        </Box>
+
+        <Box mb={2}>
+          <Typography variant="subtitle1">Owner:</Typography>
+          <Typography variant="body1">{owner.name}</Typography>
+        </Box>
+
+        <Box mb={2}>
+          <Typography variant="subtitle1">Amount Due:</Typography>
+          <Typography variant="h6" color="primary">
+            ₹{rentAmount}
+          </Typography>
+        </Box>
+
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={handlePayment}
+        >
+          Pay Now
+        </Button>
+      </Paper>
+    </Box>
   );
 };
 
