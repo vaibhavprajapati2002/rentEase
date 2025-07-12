@@ -172,7 +172,7 @@ const TenantHome = () => {
     <div style={styles.container}>
       <div style={styles.header}>Welcome, {user?.name || "Tenant"} 👋</div>
       <div style={styles.subHeader}>
-        Email: {user.email} | Phone: {user.phone} | Country: {user.country}
+        Email: {user.email} | Phone: {user.phone}
       </div>
 
       {cardData.map((section) => (
