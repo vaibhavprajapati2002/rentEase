@@ -10,7 +10,7 @@ import UserDetails from './MyComponent/Auth/UserDetails.jsx';
 import Role from './MyComponent/Auth/Role.jsx';
 import ForgotPassword from './MyComponent/Auth/ForgotPassword.jsx';
 import ResetPassword from './MyComponent/Auth/ResetPassword.jsx';
-import TenantHome from './Tenant/components/TenantHome.jsx';
+import TenantHome from './Tenant/pages/TenantHome.jsx';
 import OwnerHome from './Owner/OwnerHome.jsx';
 import Home from './Home';
 import Feature from './Feature';
