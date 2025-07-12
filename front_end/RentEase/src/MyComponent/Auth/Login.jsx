@@ -25,6 +25,7 @@ const Login = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // 🔑 New state for button loading
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +41,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // 🔄 Start loading
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
@@ -53,22 +55,28 @@ const Login = () => {
       localStorage.setItem("role", role);
       localStorage.setItem("userId", _id);
 
-      if (role === "tenant") {
-        navigate("/tenant/dashboard");
-      } else if (role === "owner") {
-        navigate("/owner/dashboard");
-      }
+      toast.success("Login successful!", {
+        position: "bottom-right",
+        autoClose: 1500,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        if (role === "tenant") {
+          navigate("/tenant/dashboard");
+        } else if (role === "owner") {
+          navigate("/owner/dashboard");
+        }
+      }, 1000); // ⏳ Small delay to show toast
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);
       toast.error(error.response?.data?.message || "Login failed", {
         position: "bottom-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
         theme: "colored",
       });
+    } finally {
+      setLoading(false); // ✅ Stop loading regardless of success or failure
     }
   };
 
@@ -113,8 +121,14 @@ const Login = () => {
             }}
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
-            Login
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2 }}
+            disabled={loading} // 🔐 Disabled when loading
+          >
+            {loading ? "Logging in..." : "Login"}
           </Button>
 
           <Box display="flex" justifyContent="space-between" mt={2}>
@@ -134,7 +148,6 @@ const Login = () => {
         </Box>
       </Paper>
 
-      {/* Toast container */}
       <ToastContainer />
     </Container>
   );
