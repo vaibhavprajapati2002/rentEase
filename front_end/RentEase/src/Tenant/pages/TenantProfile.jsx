@@ -1,5 +1,4 @@
-// TenantProfile.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Card,
@@ -14,17 +13,18 @@ import {
   Button,
   Grid,
   Collapse,
+  useMediaQuery,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
-import CloseIcon from "@mui/icons-material/Close";
-import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  Edit as EditIcon,
+  Save as SaveIcon,
+  Close as CloseIcon,
+  Logout as LogoutIcon,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-
-/* helper: convert dd/mm/yyyy → yyyy-mm-dd */
 const toISO = (d) => {
   if (!d || d.includes("-")) return d;
   const [day, month, year] = d.split("/");
@@ -33,18 +33,20 @@ const toISO = (d) => {
 
 const TenantProfile = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:600px)");
   const token = localStorage.getItem("token");
 
-  const [profile, setProfile]   = useState(null);
+  const cardRef = useRef(null);
+
+  const [profile, setProfile] = useState(null);
   const [editData, setEditData] = useState({});
   const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview]   = useState("");
-  const [loading, setLoading]   = useState(true);
-  const [saving, setSaving]     = useState(false);
+  const [preview, setPreview] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [alert, setAlert]       = useState({ type: "", msg: "" });
+  const [alert, setAlert] = useState({ type: "", msg: "" });
 
-  /* ─── Fetch profile once ─── */
   useEffect(() => {
     (async () => {
       try {
@@ -63,22 +65,24 @@ const TenantProfile = () => {
     })();
   }, []);
 
-  /* ─── Start editing ─── */
   const startEdit = () => {
     setEditData({
-      name:             profile.name             || "",
-      email:            profile.email            || "",
-      phone:            profile.phone            || "",
-      country:          profile.country          || "",
-      fatherName:       profile.fatherName       || "",
+      name: profile.name || "",
+      email: profile.email || "",
+      phone: profile.phone || "",
+      country: profile.country || "",
+      fatherName: profile.fatherName || "",
       permanentAddress: profile.permanentAddress || "",
-      gender:           profile.gender           || "",
-      dob:              profile.dob ? profile.dob.slice(0, 10) : "",
-      password:         "",
+      gender: profile.gender || "",
+      dob: profile.dob ? profile.dob.slice(0, 10) : "",
+      password: "",
     });
     setImageFile(null);
     setPreview("");
     setEditMode(true);
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   const cancelEdit = () => {
@@ -97,14 +101,12 @@ const TenantProfile = () => {
     }
   };
 
-  /* ─── Logout handler ─── */
   const handleLogout = () => {
     localStorage.removeItem("token");
     setAlert({ type: "success", msg: "Logged out successfully." });
-    setTimeout(() => navigate("/"), 800);          // adjust route as needed
+    setTimeout(() => navigate("/"), 800);
   };
 
-  /* ─── Save profile ─── */
   const saveProfile = async () => {
     setSaving(true);
     try {
@@ -138,7 +140,6 @@ const TenantProfile = () => {
     }
   };
 
-  /* ─── Loading / error states ─── */
   if (loading)
     return (
       <Box display="flex" justifyContent="center" mt={4}>
@@ -153,37 +154,30 @@ const TenantProfile = () => {
       </Box>
     );
 
-  /* avatar source */
   const avatarSrc = preview
     ? preview
+    : profile.profileImage?.startsWith("http")
+    ? profile.profileImage
     : profile.profileImage
-    ? profile.profileImage.startsWith("http")
-      ? profile.profileImage
-      : `${BASE_URL}/uploads/${profile.profileImage}`
+    ? `${BASE_URL}/uploads/${profile.profileImage}`
     : undefined;
 
   const { property } = profile;
 
-  /* ─── Render ─── */
   return (
-    <Box mt={4} display="flex" justifyContent="center">
-      <Card sx={{ maxWidth: 640, width: "100%", p: 2 }}>
+    <Box mt={4} px={isMobile ? 1 : 3} ref={cardRef}>
+      <Card sx={{ maxWidth: 700, mx: "auto", p: 2, borderRadius: 3 }}>
         <CardHeader
           avatar={<Avatar src={avatarSrc} sx={{ width: 56, height: 56 }} />}
-          title={profile.name}
-          subheader={profile.email}
+          title={<Typography variant="h6">{profile.name}</Typography>}
+          subheader={<Typography variant="body2">{profile.email}</Typography>}
           action={
-            !editMode && (
-              <>
-                <IconButton onClick={startEdit} sx={{ mr: 1 }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={handleLogout} color="error">
-                  <LogoutIcon />
-                </IconButton>
-              </>
-            )
-          }
+          !editMode && (
+            <IconButton onClick={startEdit} title="Edit Profile">
+              <EditIcon />
+            </IconButton>
+          )
+        }
         />
 
         <CardContent>
@@ -206,35 +200,39 @@ const TenantProfile = () => {
             </Alert>
           </Collapse>
 
-          {/* READ-ONLY */}
+          {/* Read-Only Mode */}
           {!editMode && (
             <Box>
-              {[
-                ["Phone", profile.phone],
-                ["Country", profile.country],
-                ["Father Name", profile.fatherName],
-                ["Permanent Address", profile.permanentAddress],
-                ["Gender", profile.gender],
-                ["DOB", profile.dob?.slice(0, 10)],
-              ].map(
-                ([label, val]) =>
-                  val && (
-                    <Typography key={label} variant="body2" mb={1}>
-                      {label}: {val}
-                    </Typography>
-                  )
-              )}
+              <Grid container spacing={1}>
+                {[
+                  ["Phone", profile.phone],
+                  ["Country", profile.country],
+                  ["Father Name", profile.fatherName],
+                  ["Permanent Address", profile.permanentAddress],
+                  ["Gender", profile.gender],
+                  ["DOB", profile.dob?.slice(0, 10)],
+                ]
+                  .filter(([, val]) => val)
+                  .map(([label, val]) => (
+                    <Grid item xs={12} sm={6} key={label}>
+                      <Typography variant="body2">
+                        <strong>{label}:</strong> {val}
+                      </Typography>
+                    </Grid>
+                  ))}
+              </Grid>
+
               {property && (
-                <Typography variant="body2">
-                  Property: {property.name} — {property.address}
+                <Typography variant="body2" mt={2}>
+                  <strong>Property:</strong> {property.name} — {property.address}
                 </Typography>
               )}
             </Box>
           )}
 
-          {/* EDIT MODE */}
+          {/* Edit Mode */}
           {editMode && (
-            <Box component="form" noValidate autoComplete="off">
+            <Box component="form" noValidate autoComplete="off" mt={1}>
               <Grid container spacing={2}>
                 {[
                   "name",
@@ -270,7 +268,7 @@ const TenantProfile = () => {
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     label="New Password"
                     name="password"
@@ -283,19 +281,20 @@ const TenantProfile = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button variant="outlined" component="label">
+                  <Button variant="outlined" component="label" fullWidth>
                     Upload Profile Image
                     <input hidden type="file" accept="image/*" onChange={handleFileChange} />
                   </Button>
+
                   {preview && (
-                    <Box mt={2}>
+                    <Box mt={2} display="flex" justifyContent="center">
                       <Avatar src={preview} sx={{ width: 80, height: 80 }} />
                     </Box>
                   )}
                 </Grid>
               </Grid>
 
-              <Box display="flex" justifyContent="flex-end" mt={2} gap={1}>
+              <Box display="flex" justifyContent="flex-end" mt={3} gap={1}>
                 <Button
                   variant="outlined"
                   onClick={cancelEdit}
