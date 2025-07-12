@@ -19,7 +19,7 @@ const app = express();
 const cors = require('cors');
 const path = require("path");
 app.use(cors({
-  origin: ["http://localhost:5173", "http://192.168.29.158:5173"], // ✅ Add your local IP here
+  origin: ["http://localhost:5173", "http://192.168.29.158:5173", "https://rentease-4158.onrender.com"], // ✅ Add your local IP here
   credentials: true
 }));
 
