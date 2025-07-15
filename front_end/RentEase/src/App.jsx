@@ -21,6 +21,7 @@ import RentPayment from './Tenant/pages/RentPayment.jsx';
 import TenantTermsAndCondition from './Tenant/pages/TenantTermsAndCondition.jsx';
 import TenantPrivacyPolicy from './Tenant/pages/TenantPrivacyAndPolicy.jsx';
 import TenantRentAgreement from './Tenant/pages/TenantRentAgreement.jsx';
+import TenantUtility from './Tenant/pages/TenantUtility.jsx';
 
 
 
@@ -104,6 +105,7 @@ function App() {
         <Route path="/tenant/terms-and-conditions" element={<TenantTermsAndCondition />} />
         <Route path="/tenant/privacy-policy" element={<TenantPrivacyPolicy />} />
         <Route path="/tenant/agreement" element={<TenantRentAgreement />} />
+        <Route path="/tenant/utilities" element={<TenantUtility />} />
 
 
         {/* Add more routes as needed */}
